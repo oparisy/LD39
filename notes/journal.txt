@@ -13,5 +13,13 @@ Setup projet git dès le début pour gagner du temps
 Prévoir à l'avenir d'encoder tout de suite les notes dans notepad++ en UTF-8 (défaut Visual Studio Code)
 
 Premier générateur de map + structure de donnée codé ; bindind map à window.map et ajout méthode de dump
-dans la console pour faciliter debug. Le reload à la volée sur modification TS marche bien, les breakpoints
-sur le TS aussi (les sources mappés sont dans webpack:// > . src)
+dans la console pour faciliter debug
+
+Le reload à la volée sur modification TS marche bien, les breakpoints sur le TS aussi
+(les sources mappés sont dans webpack:// > . src)
+
+Travail sur un premier rendu de la carte
+Il faut choisir des dimensions, on va considérer que tout est en mètres
+Couleurs : j'utilise celles de base sur https://www.w3schools.com/colors/colors_picker.asp (permet d'avoir l'hexa facilement)
+
+Calage caméra facilité par binding à window. Permet de taper camera.lookAt(scene.position) par exemple

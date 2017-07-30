@@ -7,3 +7,7 @@
 10h45 Setup git / projet
 11h30 Début codage structure de donnée carte
 12h40 Premier générateur de map ; pause
+12h55 Début travail sur rendu map
+13h45 Première scène affichée ; pause repas
+14h15 Reprise travail sur rendu map
+14h30 Premier commit rendu camera ; début travail sur drone

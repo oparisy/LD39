@@ -45,7 +45,7 @@ export class WorldMap {
         // TODO Automata-like algorithm to "grow" initial seeds of water and trees?
     }
 
-    private getCell(x, y): MapCell {
+    public getCell(x, y): MapCell {
         return this.grid[x + y * this.width]
     }
 
@@ -54,7 +54,7 @@ export class WorldMap {
     }
 }
 
-class MapCell {
+export class MapCell {
     public type: CellType
     public explored: boolean = false
 
@@ -75,6 +75,6 @@ class MapCell {
     }
 }
 
-enum CellType {
+export enum CellType {
     Ground, Tree, Rock, Water, Fumarole
 }

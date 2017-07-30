@@ -3,12 +3,12 @@ import './style.css'
 // three.js
 import * as THREE from 'three'
 import { WorldMap } from './model/worldmap'
+import { MapRenderer } from './render/maprenderer'
 
 // Build the world map
 const width = 16
 const height = 16
 let map = new WorldMap(32, 32, 5, 16, 8, 3)
-window['map'] = map // Expose object (debugging purpose)
 
 // create the scene
 let scene = new THREE.Scene()
@@ -42,24 +42,19 @@ light2.position.set(-100, 100, -100)
 
 scene.add(light2)
 
-let material = new THREE.MeshBasicMaterial({
-	color: 0xaaaaaa,
-	wireframe: true
-})
+let mapRenderer = new MapRenderer(map)
+scene.add(mapRenderer.getMesh())
 
-// create a box and add it to the scene
-let box = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), material)
-
-scene.add(box)
-
-box.position.x = 0.5
-box.rotation.y = 0.5
-
-camera.position.x = 5
-camera.position.y = 5
-camera.position.z = 5
+camera.position.x = 0
+camera.position.y = 0
+camera.position.z = 300
 
 camera.lookAt(scene.position)
+
+// Expose useful objects to the console (debugging/setup purpose)
+window['map'] = map
+window['camera'] = camera
+window['scene'] = scene
 
 function animate(): void {
 	requestAnimationFrame(animate)
@@ -68,8 +63,7 @@ function animate(): void {
 
 function render(): void {
 	let timer = 0.002 * Date.now()
-	box.position.y = 0.5 + 0.5 * Math.sin(timer)
-	box.rotation.x += 0.1
+	// Update simulation here
 	renderer.render(scene, camera)
 }
 
