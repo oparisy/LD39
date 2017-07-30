@@ -22,8 +22,10 @@ export class WorldMap {
     /** Build a default grid of ground elements */
     private setupGrid() {
         this.grid = new Array(this.numCells)
-        for (let i = 0; i < this.numCells; i++) {
-            this.grid[i] = new MapCell(CellType.Ground)
+        for (let x = 0; x < this.width; x++) {
+            for (let y = 0; y < this.height; y++) {
+                this.grid[x + y * this.width] = new MapCell(CellType.Ground, x, y)
+            }
         }
     }
 
@@ -58,7 +60,7 @@ export class MapCell {
     public type: CellType
     public explored: boolean = false
 
-    constructor(initialType: CellType) {
+    constructor(initialType: CellType, public x, public y) {
         this.type = initialType
     }
 

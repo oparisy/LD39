@@ -30,3 +30,7 @@ Garder un oeil sur la console JS : des conseils concernant la déprécation peuv
 
 Pas d'ombre drone => sol pour l'instant malgré 30mn de mise au point. Repoussé à lundi
 Ajout d'une ligne drone-sol à la place pour aider à comprendre position malgré perspective
+
+Brouillard de guerre : approche ultra minimale dans un premier temps avec simple changement de couleur face survolée
+
+Bloqué 5mn par un bug ici : if (flownOver.explored = false)... Besoin d'un linter TypeScript!

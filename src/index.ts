@@ -4,11 +4,13 @@ import './style.css'
 import * as THREE from 'three'
 import * as TWEEN from 'tween.js'
 
-import { WorldMap } from './model/worldmap'
+import { WorldMap, MapCell } from './model/worldmap'
 import { Drone } from './model/drone'
 
 import { MapRenderer } from './render/maprenderer'
 import { DroneRenderer } from './render/dronerenderer'
+
+// TODO Clean this up; no global code
 
 // Build the world map
 const width = 16
@@ -84,8 +86,8 @@ document.addEventListener('mousedown', onDocumentMouseDown, false)
 
 let clock = new THREE.Clock
 
-function animate(): void {
-	requestAnimationFrame(animate)
+function mainLoop(): void {
+	requestAnimationFrame(mainLoop)
 	let dt = clock.getDelta()
 	updateSimulation(dt)
 	render()
@@ -94,6 +96,17 @@ function animate(): void {
 
 function updateSimulation(dt: number) {
 	drone.updatePosition(dt)
+
+	// Did the drone fly over an unexplored cell?
+	let flownOver = map.getCell(Math.floor(drone.x), Math.floor(drone.y))
+	if (!flownOver.explored) {
+		reveal(flownOver)
+	}
+}
+
+function reveal(cell: MapCell) {
+	cell.explored = true
+	mapRenderer.updateFacesColor()
 }
 
 function render(): void {
@@ -114,9 +127,9 @@ function onDocumentMouseDown(event) {
 
 	var intersects = raycaster.intersectObjects([mapRenderer.mesh]);
 	if (intersects.length > 0) {
-		var pos = intersects[0].face['modelPosition']
-		drone.setTarget(pos.x, pos.y)
+		var cell: MapCell = intersects[0].face['modelCell']
+		drone.setTarget(cell.x, cell.y)
 	}
 }
 
-animate()
+mainLoop()

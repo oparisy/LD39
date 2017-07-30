@@ -8,19 +8,22 @@
  * [Fait] Coder structures de données et générateur pour carte
  * [Fait] Premier viewer de carte (caméra "vue de dessus" minimale)
  * [Fait] Déplacement et rendu drone (=> support click souris, pas besoin de picking drone)
- * Fog of war dégagé par scouting (Texture ? MultiMaterial + blend ? Shader dédié ? Propriété per-vertex ?)
- * Construction de bâtiments (tous disponibles dans un premier temps)
+ * [Fait] Fog of war dégagé par scouting
+ * CSS minimale pour organiser la page (emplacement carte + compteurs et menu contextuel en HTML)
  * Compteurs ; interface à la "total anihilation" (cf. http://jolstatic.fr/www/captures/1941/0/82790.jpg)
+ * Construction de bâtiments (tous disponibles dans un premier temps)
  * Mises à jour compteurs (simulation gains / coûts)
  * Recherche => restrictions constructions, simulation de son évolution
  * Cycle jour / nuit (pour panneaux solaires)
  * Dans la journée : créer entrée jeu sur site Jam
  * Améliorer génération arbres et eau via automates
- * Vérifier qu'on sait charger un modèle glTF
+ * Vérifier qu'on sait charger un modèle glTF (arbre ou rocher lowpoly)
+ * Vérifier qu'on sait faire un build ; le publier
+ * Améliorer caméra
 
 Lundi (pas d'ordre défini) :
  * Debugger ombre drone
- * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué)
+ * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué, améliore reveal)
  * modèles bâtiments / véhicules
  * animations
  * polish gameplay
@@ -29,7 +32,7 @@ Lundi (pas d'ordre défini) :
 
 
 A faire dans un second temps :
-    Relevé des vents par scout + vue "carte des vents" pour choisir au mieux emplacements
+    Intensité mouvements arbres => indice de l'intensité du vent
 
     Hydraulique : nécessite génération rivières ou mers
     Energie stable mais très coûteuse à construire

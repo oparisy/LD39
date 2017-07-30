@@ -1,13 +1,17 @@
 export class Drone {
 
-    /** m/s */
+    /** m/s but we're not normalizing, so I'm not so sure... */
     private static readonly speed = 5
 
     /** Target position */
     private tx: number
     private ty: number
 
-    /** Setup the drone; positions are float coordinates on the worldmap */
+    /**
+     * Setup the drone; positions are float coordinates on the worldmap.
+     * TODO We should use scene coordinates, and be able to convert from/to grid coordinates when needed
+     * (probably not this classe's job!)
+     */
     constructor(public x: number, public y: number) {
         // Initially target and position are the same
         this.tx = x
