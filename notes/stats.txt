@@ -1,0 +1,66 @@
+﻿Sources d'énergie
+
+    Accumulateurs
+        Stockent énergie
+        Capacité limitée (100 kWh)
+        Une recherche permet de doubler la capacité
+        Coût : 75 creds par accumulateur
+
+    Panneaux solaires
+        Source d'énergie dépendant de la journée, peu coûteuse à mettre en place, prend beaucoup de place
+        Ne nécessite pas de recherche initiale, mais une recherche double le rendement (1000 creds)
+        Coût : 10 creds par panneau
+        Temps de production : 2s
+        Produit : 10 kW
+        
+    Eolienne
+        Source d'énergie variable, avec un minimum et un maximum garantis suivant implantation
+        Pas de recherche initiale, mais une recherche double le rendement (1000 creds)
+        Coût : 150 creds par éolienne
+        Temps de production : 10s
+        Produit : entre 50 et 100 kW
+        
+    Géothermie
+        Source stable d'énergie mais coûteuse à mettre en place
+        Nécessite recherche (1000 creds)
+        Coût : 1000 creds
+        Temps de production du bâtiment : 30s
+        Produit : 1000 kW
+
+Autres bâtiments
+
+    Centre de recherche
+        Coût : 500 creds
+        Augmente consommation de 100 kW
+    
+Véhicules
+
+    Scout (Drone)
+        Un fourni initialement
+        Déplacement par clic sur scout (sélection) => clic droit sur destination
+        Déplacement relativement rapide, en ligne droite
+
+Compteurs
+
+    Creds
+        Dotation initiale (500 creds)
+        Incrémentés régulièrement (la ville achète l'énergie, mais à un prix forfaitaire non dépendant de la prod)
+        => +100 creds / minute
+
+    Power
+        Représente stocks d'energie dans les accumulateurs
+        A chaque tick on calcule
+            la somme des production => indiquée sur compteur ("+")
+            la somme des consommations (ville + recherches en cours) => indiqué sur compteur ("-")
+            la différence des deux => multipliée par dt, donne kWh à stocker ou supprimer (capper par capacité accums)
+        Si pas d'accumulateurs, le compteur indique 0
+
+Conditions de victoire / défaite
+    Si la ville ne peut plus être fournie, on perd le contrat (game over)
+    => stocks vides et prod < consommation
+    Si on a tenu un certain temps, on gagne le niveau
+
+Misc
+    Une minute de jeu => 4h (un cycle jour/nuit en 6mn)
+    La nuit dure 2mn (8h)
+    Les recherches prennent 1mn et augmentent la consommation de 200kWh

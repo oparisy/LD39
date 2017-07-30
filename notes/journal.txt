@@ -1,0 +1,13 @@
+﻿30/07/2017
+Installation ordinateur, wifi, connexion second écran : OK, efficace (j'avais adaptateurs HDMI / DVI et câbles nécessaires)
+Perte de temps sur VPN (ne fonctionne pas) et accès quickconnect NAS (capricieux) => pas d'accès à mon wiki...
+Il faudra régler ça au calme (en simulant accès "externe" via tethering 4G par exemple)
+
+Test de github.com/pinqy520/three-typescript-starter (en espérant qu'il s'agit bien du starter que j'avais identifié)
+=> oui, c'est bien ça
+
+TODO voir avec Emilie ce que j'y avais changé...
+
+31/07/2017
+Setup projet git dès le début pour gagner du temps
+Prévoir à l'avenir d'encoder tout de suite les notes dans notepad++ en UTF-8 (défaut Visual Studio Code)

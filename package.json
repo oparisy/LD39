@@ -1,0 +1,39 @@
+{
+  "name": "LD39",
+  "version": "1.0.0",
+  "description": "three.js + typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --inline --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oparisy/LD39.git"
+  },
+  "keywords": [],
+  "author": "Huang Qi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oparisy/LD39/issues"
+  },
+  "homepage": "https://github.com/oparisy/LD39#readme",
+  "devDependencies": {
+    "awesome-typescript-loader": "latest",
+    "browser-sync": "latest",
+    "browser-sync-webpack-plugin": "latest",
+    "css-loader": "latest",
+    "extract-text-webpack-plugin": "latest",
+    "html-webpack-plugin": "latest",
+    "json-loader": "latest",
+    "progress-bar-webpack-plugin": "latest",
+    "style-loader": "latest",
+    "typescript": "latest",
+    "webpack": "latest",
+    "webpack-dev-server": "latest"
+  },
+  "dependencies": {
+    "@types/three": "latest",
+    "three": "latest"
+  }
+}

@@ -1,0 +1,44 @@
+﻿Dimanche :
+ * [Fait] Document définissant :
+   * les différents types de ressources, bâtiments, véhicules
+   * leurs comportements / caractéristiques
+   * impact du stockage et de la ville (cf. "compteurs" ci-dessous)
+   * conditions de victoire et d'échec
+ * Coder structures de données et générateur pour carte
+ * Premier viewer de carte (caméra "vue de dessus" minimale)
+ * Mécanisme de scouting (=> support clicks souris et picking)
+ * Fog of war (Texture ? MultiMaterial + blend ? Shader dédié ? Propriété per-vertex ?)
+ * Construction de bâtiments (tous disponibles dans un premier temps)
+ * Compteurs ; interface à la "total anihilation" (cf. http://jolstatic.fr/www/captures/1941/0/82790.jpg)
+ * Mises à jour compteurs (simulation gains / coûts)
+ * Recherche => restrictions constructions, simulation de son évolution
+ * Cycle jour / nuit (pour panneaux solaires)
+
+Lundi :
+ * modèles bâtiments / véhicules
+ * animations
+ * polish gameplay
+ * polish rendu / shaders
+ * assets "décoratifs" hors gameplay (arbres, etc.)
+
+
+A faire dans un second temps :
+    Relevé des vents par scout + vue "carte des vents" pour choisir au mieux emplacements
+
+    Hydraulique : nécessite génération rivières ou mers
+    Energie stable mais très coûteuse à construire
+    Sympa visuellement (permet d'écrire un shader dédié)
+
+    Charbon + centrale thermique
+        Stock d'énergie important mais non renouvelable ; nécessite infra associée (mine et véhicules)
+        Pas de recherche initiale
+        Coût : 500 creds centrale, 500 creds par mine
+        
+    Véhicules nécessaires par constructions :
+        camion pour panneaux solaires
+        grue mobile pour éoliennes
+        foreuse pour géothermie
+    
+    Faut-il pouvoir acheter des scouts supplémentaires ?
+    
+    Destruction des bâtiments

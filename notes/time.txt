@@ -1,0 +1,8 @@
+30/07/2017
+23h00 Setup
+
+31/07/2017
+ 8h30 Travail sur règles
+ 9h30 Pause / courses
+10h45 Setup git / projet
+11h15 Début codage structure de donnée carte
