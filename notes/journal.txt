@@ -23,3 +23,10 @@ Il faut choisir des dimensions, on va considérer que tout est en mètres
 Couleurs : j'utilise celles de base sur https://www.w3schools.com/colors/colors_picker.asp (permet d'avoir l'hexa facilement)
 
 Calage caméra facilité par binding à window. Permet de taper camera.lookAt(scene.position) par exemple
+
+Travail sur drone. Mise au point rendue pénible par le double système de coordonnées (grille de simulation + scène)
+
+Garder un oeil sur la console JS : des conseils concernant la déprécation peuvent être affichées par THREE
+
+Pas d'ombre drone => sol pour l'instant malgré 30mn de mise au point. Repoussé à lundi
+Ajout d'une ligne drone-sol à la place pour aider à comprendre position malgré perspective

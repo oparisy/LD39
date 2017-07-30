@@ -11,3 +11,4 @@
 13h45 Première scène affichée ; pause repas
 14h15 Reprise travail sur rendu map
 14h30 Premier commit rendu camera ; début travail sur drone
+17h20 Premier commit drone (déplacement et picking)

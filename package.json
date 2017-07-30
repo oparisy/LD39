@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@types/three": "latest",
-    "three": "latest"
+    "three": "latest",
+    "tween.js": "16.6.0"
   }
 }

@@ -7,7 +7,7 @@
  * [Fait] Setup starter (build), projet github
  * [Fait] Coder structures de données et générateur pour carte
  * [Fait] Premier viewer de carte (caméra "vue de dessus" minimale)
- * Déplacement et rendu drone (=> support click souris, pas besoin de picking drone)
+ * [Fait] Déplacement et rendu drone (=> support click souris, pas besoin de picking drone)
  * Fog of war dégagé par scouting (Texture ? MultiMaterial + blend ? Shader dédié ? Propriété per-vertex ?)
  * Construction de bâtiments (tous disponibles dans un premier temps)
  * Compteurs ; interface à la "total anihilation" (cf. http://jolstatic.fr/www/captures/1941/0/82790.jpg)
@@ -16,8 +16,11 @@
  * Cycle jour / nuit (pour panneaux solaires)
  * Dans la journée : créer entrée jeu sur site Jam
  * Améliorer génération arbres et eau via automates
+ * Vérifier qu'on sait charger un modèle glTF
 
-Lundi :
+Lundi (pas d'ordre défini) :
+ * Debugger ombre drone
+ * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué)
  * modèles bâtiments / véhicules
  * animations
  * polish gameplay
