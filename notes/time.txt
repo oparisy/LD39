@@ -14,3 +14,5 @@
 17h20 Premier commit drone (déplacement et picking) ; pause
 17h45 Début travail sur brouillard de guerre
 18h25 Premier commit brouillard (reveal) ; pause
+19h25 Début travail sur organisation écran
+22h30 Abandon travail sur layout... pause

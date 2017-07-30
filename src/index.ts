@@ -23,14 +23,16 @@ let drone = new Drone(Math.floor(map.width / 2), Math.floor(map.height / 2))
 // create the scene
 let scene = new THREE.Scene()
 
-// create the camera
-let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-
 let renderer = new THREE.WebGLRenderer({ antialias: true })
 renderer.shadowMap.enabled = true
 
 // set size
-renderer.setSize(window.innerWidth, window.innerHeight)
+const canvasWidth = window.innerWidth
+const canvasHeight = window.innerHeight - 8 // Avoid scrollbars (why?)
+renderer.setSize(canvasWidth, canvasHeight)
+
+// create the camera now that we know the renderer size
+let camera = new THREE.PerspectiveCamera(75, renderer.getSize().width / renderer.getSize().height, 0.1, 1000)
 
 // add canvas to dom
 document.body.appendChild(renderer.domElement)

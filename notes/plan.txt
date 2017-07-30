@@ -20,15 +20,17 @@
  * Vérifier qu'on sait charger un modèle glTF (arbre ou rocher lowpoly)
  * Vérifier qu'on sait faire un build ; le publier
  * Améliorer caméra
+ * Titre page...
 
 Lundi (pas d'ordre défini) :
  * Debugger ombre drone
- * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué, améliore reveal)
+ * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué, améliore reveal ; impact du + 0.5?)
  * modèles bâtiments / véhicules
  * animations
  * polish gameplay
  * polish rendu / shaders
  * assets "décoratifs" hors gameplay (arbres, etc.)
+ * Accueil / flot de pages
 
 
 A faire dans un second temps :

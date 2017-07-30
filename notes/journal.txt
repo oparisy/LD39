@@ -34,3 +34,14 @@ Ajout d'une ligne drone-sol à la place pour aider à comprendre position malgr�
 Brouillard de guerre : approche ultra minimale dans un premier temps avec simple changement de couleur face survolée
 
 Bloqué 5mn par un bug ici : if (flownOver.explored = false)... Besoin d'un linter TypeScript!
+
+Beaucoup de temps perdu sur mise au point CSS car les traitements css-modules de webpack interféraient,
+et je n'ai pas compris comment faire réécrire mon HTML pour référencer les sélecteurs réécrits
+=> comportement supprimé en enlevant le loader en "css-loader?modules" de mon webpack.config.js
+
+J'utilise des classes CSS pour sélectionner, apparemment les ids sont déconseillés ?
+
+Bonne doc flexbox : https://www.alsacreations.com/tuto/lire/1493-css3-flexbox-layout-module.html
+
+Je laisse tomber le travail de layout... Trop long à mettre au point, et interactions canvas + flexbox tordus
+Il faudra faire un snippet de démo au calme...
