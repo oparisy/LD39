@@ -23,19 +23,22 @@ let drone = new Drone(Math.floor(map.width / 2), Math.floor(map.height / 2))
 // create the scene
 let scene = new THREE.Scene()
 
-let renderer = new THREE.WebGLRenderer({ antialias: true })
+// Get existing DOM canvas
+let canvas = <HTMLCanvasElement>document.getElementById('map')
+
+let renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true })
 renderer.shadowMap.enabled = true
 
 // set size
-const canvasWidth = window.innerWidth
-const canvasHeight = window.innerHeight - 8 // Avoid scrollbars (why?)
+const canvasWidth = window.innerWidth - 300
+const canvasHeight = window.innerHeight
 renderer.setSize(canvasWidth, canvasHeight)
 
 // create the camera now that we know the renderer size
 let camera = new THREE.PerspectiveCamera(75, renderer.getSize().width / renderer.getSize().height, 0.1, 1000)
 
 // add canvas to dom
-document.body.appendChild(renderer.domElement)
+//document.body.appendChild(renderer.domElement)
 
 // add lights
 let light = new THREE.DirectionalLight(0xffffff, 1.0)
@@ -84,7 +87,7 @@ window['scene'] = scene
 window['droneRenderer'] = droneRenderer
 
 // Set up DOM events
-document.addEventListener('mousedown', onDocumentMouseDown, false)
+canvas.addEventListener('mousedown', onDocumentMouseDown, false)
 
 let clock = new THREE.Clock
 
@@ -123,8 +126,8 @@ var mouse = new THREE.Vector2()
 /** Pick on click */
 function onDocumentMouseDown(event) {
 	event.preventDefault();
-	mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1
-	mouse.y = - (event.clientY / renderer.domElement.clientHeight) * 2 + 1
+	mouse.x = ((event.clientX - renderer.domElement.offsetLeft) / renderer.domElement.clientWidth) * 2 - 1
+	mouse.y = - ((event.clientY - renderer.domElement.offsetTop) / renderer.domElement.clientHeight) * 2 + 1
 	raycaster.setFromCamera(mouse, camera)
 
 	var intersects = raycaster.intersectObjects([mapRenderer.mesh]);

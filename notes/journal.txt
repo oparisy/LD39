@@ -45,3 +45,5 @@ Bonne doc flexbox : https://www.alsacreations.com/tuto/lire/1493-css3-flexbox-la
 
 Je laisse tomber le travail de layout... Trop long à mettre au point, et interactions canvas + flexbox tordus
 Il faudra faire un snippet de démo au calme...
+Je me suis rabattu sur une approche "en dur" (des tailles fixées dans le CSS et le JS),
+tout en exploitant flexbox quand plus facile
