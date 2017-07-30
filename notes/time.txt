@@ -5,4 +5,5 @@
  8h30 Travail sur règles
  9h30 Pause / courses
 10h45 Setup git / projet
-11h15 Début codage structure de donnée carte
+11h30 Début codage structure de donnée carte
+12h40 Premier générateur de map ; pause

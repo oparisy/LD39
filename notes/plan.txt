@@ -4,7 +4,8 @@
    * leurs comportements / caractéristiques
    * impact du stockage et de la ville (cf. "compteurs" ci-dessous)
    * conditions de victoire et d'échec
- * Coder structures de données et générateur pour carte
+ * [Fait] Setup starter (build), projet github
+ * [Fait] Coder structures de données et générateur pour carte
  * Premier viewer de carte (caméra "vue de dessus" minimale)
  * Mécanisme de scouting (=> support clicks souris et picking)
  * Fog of war (Texture ? MultiMaterial + blend ? Shader dédié ? Propriété per-vertex ?)
@@ -13,6 +14,8 @@
  * Mises à jour compteurs (simulation gains / coûts)
  * Recherche => restrictions constructions, simulation de son évolution
  * Cycle jour / nuit (pour panneaux solaires)
+ * Dans la journée : créer entrée jeu sur site Jam
+ * Améliorer génération arbres et eau via automates
 
 Lundi :
  * modèles bâtiments / véhicules

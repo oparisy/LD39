@@ -11,3 +11,7 @@ TODO voir avec Emilie ce que j'y avais changé...
 31/07/2017
 Setup projet git dès le début pour gagner du temps
 Prévoir à l'avenir d'encoder tout de suite les notes dans notepad++ en UTF-8 (défaut Visual Studio Code)
+
+Premier générateur de map + structure de donnée codé ; bindind map à window.map et ajout méthode de dump
+dans la console pour faciliter debug. Le reload à la volée sur modification TS marche bien, les breakpoints
+sur le TS aussi (les sources mappés sont dans webpack:// > . src)

@@ -2,6 +2,13 @@
 import './style.css'
 // three.js
 import * as THREE from 'three'
+import { WorldMap } from './model/worldmap'
+
+// Build the world map
+const width = 16
+const height = 16
+let map = new WorldMap(32, 32, 5, 16, 8, 3)
+window['map'] = map // Expose object (debugging purpose)
 
 // create the scene
 let scene = new THREE.Scene()
