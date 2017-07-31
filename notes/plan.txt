@@ -9,8 +9,8 @@
  * [Fait] Premier viewer de carte (caméra "vue de dessus" minimale)
  * [Fait] Déplacement et rendu drone (=> support click souris, pas besoin de picking drone)
  * [Fait] Fog of war dégagé par scouting
- * CSS minimale pour organiser la page (emplacement carte + compteurs et menu contextuel en HTML)
- * Compteurs ; interface à la "total anihilation" (cf. http://jolstatic.fr/www/captures/1941/0/82790.jpg)
+ * [Fait] CSS minimale pour organiser la page (emplacement carte + compteurs et menu contextuel en HTML)
+ * [Fait] Compteurs ; interface à la "total anihilation" (cf. http://jolstatic.fr/www/captures/1941/0/82790.jpg)
  * Construction de bâtiments (tous disponibles dans un premier temps)
  * Mises à jour compteurs (simulation gains / coûts)
  * Recherche => restrictions constructions, simulation de son évolution
@@ -23,6 +23,7 @@
  * Titre page...
 
 Lundi (pas d'ordre défini) :
+ * Zone textuelle pour expliquer fonction éléments en hover (canvas, bouttons, compteurs)
  * Debugger ombre drone
  * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué, améliore reveal ; impact du + 0.5?)
  * modèles bâtiments / véhicules

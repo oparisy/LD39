@@ -1,7 +1,7 @@
-30/07/2017
+29/07/2017
 23h00 Setup
 
-31/07/2017
+30/07/2017
  8h30 Travail sur règles
  9h30 Pause / courses
 10h45 Setup git / projet
@@ -16,4 +16,10 @@
 18h25 Premier commit brouillard (reveal) ; pause
 19h25 Début travail sur organisation écran
 22h30 Abandon travail initial sur layout (sizing canvas par flexbox)
-23h45 Commit layout en dur map + compteurs + zone d'actions
+23h45 Commit layout en dur map + compteurs + zone d'actions; pause repas
+00h10 Début travail sur construction bâtiments
+00h50 Fin de la journée
+
+31/07/2017
+08h45 Reprise travail sur construction bâtiments
+09h45 Commit description bâtiments

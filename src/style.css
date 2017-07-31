@@ -16,13 +16,17 @@ body {
 	background-color: black;
 }
 
+/** TODO Consider using a flexbox container */
 #ui {
 	width: 300px;
-	padding-left: 12px;
-	padding-top: 12px;
+	padding: 12px;
 	color: white;
 	font-family: Sans-Serif;
 	font-size: 24px;
+	border-style: solid;
+	border-radius: 5px;
+	align-self: flex-start; /* "strech" to take all vert. space */
+	height: 75%;
 }
 
 #map {
@@ -44,6 +48,12 @@ body {
 	justify-content: flex-start;
 }
 
+.counterLabel {
+	/* Required for width to have an effect (https://stackoverflow.com/a/257524/38096) */
+	float: left;
+	width: 4em;
+}
+
 .actionButton {
     background-color: #4CAF50; /* Green */
     border: none;
@@ -52,7 +62,33 @@ body {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 18px;
 	margin: 8px 0px;
 	cursor: pointer;
+}
+
+#infos {
+	padding-top: 24px;
+}
+
+#infos > .error {
+	color: #ff00ff; /* Blender fuchsia */
+}
+
+#infos > .title {
+	font-weight: bold;
+	font-size: 24px;
+	width: 100%;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	margin-bottom: 8px;
+}
+
+#infos > .text {
+	font-size: 20px;
+	text-align: justify;
+}
+
+#infos > * {
+	margin: 0px;
 }

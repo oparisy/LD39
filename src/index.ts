@@ -6,6 +6,7 @@ import * as TWEEN from 'tween.js'
 
 import { WorldMap, MapCell } from './model/worldmap'
 import { Drone } from './model/drone'
+import { Building, BuildingType } from './model/building'
 
 import { MapRenderer } from './render/maprenderer'
 import { DroneRenderer } from './render/dronerenderer'
@@ -86,8 +87,42 @@ window['camera'] = camera
 window['scene'] = scene
 window['droneRenderer'] = droneRenderer
 
+// Get UI DOM elements
+let buildAccumulator = document.getElementById('buildAccumulator')
+let buildSolar = document.getElementById('buildSolar')
+let buildWindmill = document.getElementById('buildWindmill')
+let buildGeothermal = document.getElementById('buildGeothermal')
+let buildResearch = document.getElementById('buildResearch')
+let infos = document.getElementById('infos')
+
+// Enrich button to ease following code
+buildAccumulator['buildingType'] = BuildingType.Accumulator
+buildSolar['buildingType'] = BuildingType.SolarPanel
+buildWindmill['buildingType'] = BuildingType.Windmill
+buildGeothermal['buildingType'] = BuildingType.Geothermal
+buildResearch['buildingType'] = BuildingType.Research
+let buildButtons = [buildAccumulator, buildSolar, buildWindmill, buildGeothermal, buildResearch]
+
 // Set up DOM events
 canvas.addEventListener('mousedown', onDocumentMouseDown, false)
+for (let bt of buildButtons) {
+	let type = bt['buildingType']
+	bt.addEventListener('click', function () { buildBuilding(type) })
+	bt.addEventListener('mouseenter', function () { setDescription(Building.getDescription(type)) })
+	bt.addEventListener('mouseleave', function () { clearDescription() })
+}
+
+function buildBuilding(type: BuildingType) {
+	console.log("TODO: build a " + type)
+}
+
+function setDescription(htmlText: string) {
+	infos.innerHTML = htmlText;
+}
+
+function clearDescription() {
+	setDescription('');
+}
 
 let clock = new THREE.Clock
 

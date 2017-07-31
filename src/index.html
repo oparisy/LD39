@@ -8,13 +8,17 @@
 
 <body>
     <div id='ui'>
-        <div>Credits <span id='credits'>0</span></div>
-        <div>Power <span id='power'>0</span> / <span id='maxpower'>0</span> (<span id='incpower'>+0</span> <span id='decpower'>-0</span>)</div>
+        <div><span class='counterLabel'>Credits </span><span id='credits'>0</span></div>
+        <div><span class='counterLabel'>Power </span><span id='power'>0</span> / <span id='maxpower'>0</span> (<span id='incpower'>+0</span>            <span id='decpower'>-0</span>)</div>
         <br>
         <div id='actionButtonsContainer'>
-            <button class='actionButton'>Action 1</button>
-            <button class='actionButton'>Action 2</button>
+            <button class='actionButton' id='buildAccumulator'>Build Accumulator</button>
+            <button class='actionButton' id='buildSolar'>Build Solar Panel</button>
+            <button class='actionButton' id='buildWindmill'>Build Windmill</button>
+            <button class='actionButton' id='buildGeothermal'>Build Geothermal Plant</button>
+            <button class='actionButton' id='buildResearch'>Build Research Facility</button>
         </div>
+        <div id='infos'></div>
     </div>
     <canvas id='map'></canvas>
 </body>
