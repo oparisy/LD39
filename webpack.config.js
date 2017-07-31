@@ -24,27 +24,27 @@ const ProgressBarPluginConfig = new ProgressBarPlugin()
 module.exports = {
   devtool: 'source-map',
   entry: [
-      './src/index.ts'
-    ],
+    './src/index.ts'
+  ],
   output: {
-      path: __dirname + '/dist',
-      filename: 'index.js'
-    },
+    path: __dirname + '/docs',
+    filename: 'index.js'
+  },
   module: {
-      loaders: [
-          {
-            test: /\.ts$/,
-            loader: 'awesome-typescript-loader'
-          }, {
-              test: /\.css$/,
-              exclude: /[\/\\](node_modules|bower_components|public)[\/\\]/,
-              loaders: [
-                  'style-loader?sourceMap',
-                  'css-loader'
-                ]
-            }
+    loaders: [
+      {
+        test: /\.ts$/,
+        loader: 'awesome-typescript-loader'
+      }, {
+        test: /\.css$/,
+        exclude: /[\/\\](node_modules|bower_components|public)[\/\\]/,
+        loaders: [
+          'style-loader?sourceMap',
+          'css-loader'
         ]
-    },
+      }
+    ]
+  },
   resolve: { extensions: ['.web.ts', '.web.js', '.ts', '.js'] },
   plugins: [HTMLWebpackPluginConfig, BrowserSyncPluginConfig, ProgressBarPluginConfig]
 }

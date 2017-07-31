@@ -17,3 +17,5 @@ Idée trop longues / pas retenues :
     Faut-il pouvoir acheter des scouts supplémentaires ?
     
     Destruction des bâtiments
+
+    Durée des constructions

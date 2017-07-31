@@ -17,7 +17,7 @@ Lundi (essentiels) :
  * [Fait] Construction de bâtiments (tous disponibles dans un premier temps)
  * [Fait] Mises à jour compteurs (simulation gains / coûts)
  * [Fait] Cycle jour / nuit (pour panneaux solaires)
- * Titre page... Nom du jeu ?
+ * [Fait] Titre page... Nom du jeu ? => "Power Tycoon"
  * Avant 16h: vérifier qu'on sait faire un build ; le publier
  * Avant 16h : créer entrée jeu sur site Jam
  * Finir d'implémenter dépenses et constantes encore à zéro
@@ -28,6 +28,7 @@ Ensuite :
  * Améliorer caméra
  * Accueil / flot de pages
  * polish gameplay
+ * Améliorer champ de vision drone (3x3)
  * Améliorer génération arbres et eau via automates
  * Zone textuelle pour expliquer fonction éléments en hover (canvas, compteurs)
  * Vérifier qu'on sait charger un modèle glTF (arbre ou rocher lowpoly)
@@ -40,4 +41,4 @@ Ensuite :
  * animations
  * Intensité mouvements arbres => indice de l'intensité du vent
  * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué, améliore reveal ; impact du + 0.5?)
- * Durée des constructions
+ * Packaging "minified"

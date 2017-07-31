@@ -82,3 +82,11 @@ pour créer des reliefs. On est trop dépendants de sa structure
 Le mécanisme de BrowserSync est vraiment pratique, jamais besoin de relancer de build à la main
 
 Du temps passé sur l'implémentation des règles, mais gratifiant et je ne vois pas comment raccourcir
+
+Jeu essentiellement réalisé à 16h... J'hésite sur l'affichage des gameover / victoires
+
+La publication via webpack marche bien ! Jeu testé sous Edge et Chrome
+Je ne perd pas de temps sur la "minification" ; mon starter ne la propose pas
+
+Publication GitHub : Settings > GitHub Pages > Source: /docs
+Configuration webpack ajustée en circonstance

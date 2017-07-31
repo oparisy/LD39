@@ -29,3 +29,4 @@
 13h30 Pause repas
 14h05 Reprise travail sur simulation compteurs
 15h30 Commit implémentation simulation énergie et temps ; pause
+15h50 Reprise travail sur publication jeu
