@@ -47,6 +47,44 @@ export class MapRenderer {
         this.geom.colorsNeedUpdate = true
     }
 
+    public cellBuilt(cell: MapCell) {
+        // Search for both triangles composing this face
+        let tris: THREE.Face3[] = []
+        for (var i = 0; i < this.geom.faces.length; i++) {
+            let face = this.geom.faces[i]
+            if (face['modelCell'] == cell) {
+                tris.push(face)
+            }
+        }
+
+        // Compute some kind of barycenter
+        var vset = new Set()
+        vset.add(tris[0].a)
+        vset.add(tris[0].b)
+        vset.add(tris[0].c)
+        vset.add(tris[1].a)
+        vset.add(tris[1].b)
+        vset.add(tris[1].c)
+        var position = new THREE.Vector3()
+        var vertices = this.geom.vertices
+        for (let idx of vset) {
+            position.add(vertices[idx])
+        }
+        position.multiplyScalar(1 / vset.size)
+
+        // Add building here
+        const size = MapRenderer.side / 3
+        var cubeGeometry = new THREE.CubeGeometry(size, size, size)
+        var color = new THREE.Color(this.getCellColor(cell))
+        var hsl = color.getHSL()
+        color.setHSL(hsl.h, hsl.s, hsl.l * 1.2)
+        var cubeMaterial = new THREE.MeshLambertMaterial({ color: color.getHex() })
+        var cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
+        cube.position.set(position.x, position.y, size / 2)
+
+        this.mesh.add(cube)
+    }
+
     private getCellColor(cell: MapCell): number {
         if (!cell.explored) {
             return 0xa6a6a6 // Fog color

@@ -11,19 +11,22 @@
  * [Fait] Fog of war dégagé par scouting
  * [Fait] CSS minimale pour organiser la page (emplacement carte + compteurs et menu contextuel en HTML)
  * [Fait] Compteurs ; interface à la "total anihilation" (cf. http://jolstatic.fr/www/captures/1941/0/82790.jpg)
- * Construction de bâtiments (tous disponibles dans un premier temps)
+
+Lundi (essentiels) :
+ * [Fait] Zone textuelle pour expliquer fonction éléments en hover (boutons)
+ * [Fait] Construction de bâtiments (tous disponibles dans un premier temps)
  * Mises à jour compteurs (simulation gains / coûts)
+ * Avant 16h: vérifier qu'on sait faire un build ; le publier
+ * Avant 16h : créer entrée jeu sur site Jam
+ * Titre page...
  * Recherche => restrictions constructions, simulation de son évolution
  * Cycle jour / nuit (pour panneaux solaires)
- * Dans la journée : créer entrée jeu sur site Jam
- * Améliorer génération arbres et eau via automates
- * Vérifier qu'on sait charger un modèle glTF (arbre ou rocher lowpoly)
- * Vérifier qu'on sait faire un build ; le publier
- * Améliorer caméra
- * Titre page...
 
-Lundi (pas d'ordre défini) :
- * Zone textuelle pour expliquer fonction éléments en hover (canvas, bouttons, compteurs)
+Ensuite :
+ * Vérifier qu'on sait charger un modèle glTF (arbre ou rocher lowpoly)
+ * Améliorer caméra
+ * Améliorer génération arbres et eau via automates
+ * Zone textuelle pour expliquer fonction éléments en hover (canvas, compteurs)
  * Debugger ombre drone
  * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué, améliore reveal ; impact du + 0.5?)
  * modèles bâtiments / véhicules
@@ -32,25 +35,5 @@ Lundi (pas d'ordre défini) :
  * polish rendu / shaders
  * assets "décoratifs" hors gameplay (arbres, etc.)
  * Accueil / flot de pages
-
-
-A faire dans un second temps :
-    Intensité mouvements arbres => indice de l'intensité du vent
-
-    Hydraulique : nécessite génération rivières ou mers
-    Energie stable mais très coûteuse à construire
-    Sympa visuellement (permet d'écrire un shader dédié)
-
-    Charbon + centrale thermique
-        Stock d'énergie important mais non renouvelable ; nécessite infra associée (mine et véhicules)
-        Pas de recherche initiale
-        Coût : 500 creds centrale, 500 creds par mine
-        
-    Véhicules nécessaires par constructions :
-        camion pour panneaux solaires
-        grue mobile pour éoliennes
-        foreuse pour géothermie
-    
-    Faut-il pouvoir acheter des scouts supplémentaires ?
-    
-    Destruction des bâtiments
+ * Shader eau
+ * Intensité mouvements arbres => indice de l'intensité du vent

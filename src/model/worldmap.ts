@@ -1,3 +1,5 @@
+import { Building, BuildingType } from './building'
+
 export class WorldMap {
     private grid: MapCell[]
     private numCells: number;
@@ -59,14 +61,18 @@ export class WorldMap {
 export class MapCell {
     public type: CellType
     public explored: boolean = false
+    private building: Building = null
 
     constructor(initialType: CellType, public x, public y) {
         this.type = initialType
     }
 
     public isBuilt(): boolean {
-        // TODO
-        return false;
+        return this.building !== null
+    }
+
+    public buildBuilding(type: BuildingType) {
+        this.building = new Building(type, this)
     }
 
     /** Return the cell type as an ASCII character. Debugging purpose */

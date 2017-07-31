@@ -88,11 +88,11 @@ window['scene'] = scene
 window['droneRenderer'] = droneRenderer
 
 // Get UI DOM elements
-let buildAccumulator = <HTMLButtonElement>document.getElementById('buildAccumulator')
-let buildSolar = <HTMLButtonElement>document.getElementById('buildSolar')
-let buildWindmill = <HTMLButtonElement>document.getElementById('buildWindmill')
-let buildGeothermal = <HTMLButtonElement>document.getElementById('buildGeothermal')
-let buildResearch = <HTMLButtonElement>document.getElementById('buildResearch')
+let buildAccumulator = document.getElementById('buildAccumulator')
+let buildSolar = document.getElementById('buildSolar')
+let buildWindmill = document.getElementById('buildWindmill')
+let buildGeothermal = document.getElementById('buildGeothermal')
+let buildResearch = document.getElementById('buildResearch')
 let infos = document.getElementById('infos')
 
 // Enrich button to ease following code
@@ -107,13 +107,17 @@ let buildButtons = [buildAccumulator, buildSolar, buildWindmill, buildGeothermal
 canvas.addEventListener('mousedown', onDocumentMouseDown, false)
 for (let bt of buildButtons) {
 	let type = bt['buildingType']
-	bt.addEventListener('click', function () { if (!bt.classList.contains('disabled')) { buildBuilding(type) } })
+	bt.addEventListener('click', function () { onButtonClick(bt, type) });
 	bt.addEventListener('mouseenter', function () { setDescription(Building.getDescription(type)) })
 	bt.addEventListener('mouseleave', function () { clearDescription() })
 }
 
-function buildBuilding(type: BuildingType) {
-	console.log("TODO: build a " + type)
+function onButtonClick(bt, type) {
+	if (!bt.classList.contains('disabled') && currentCell != null) {
+		currentCell.buildBuilding(type)
+		mapRenderer.cellBuilt(currentCell)
+		updateButtonsState(currentCell)
+	}
 }
 
 function setDescription(htmlText: string) {
@@ -134,15 +138,15 @@ function mainLoop(): void {
 	// TWEEN.update()
 }
 
-let lastFlownOver = null
+let currentCell: MapCell = null
 
 function updateSimulation(dt: number) {
 	drone.updatePosition(dt)
 
 	// Did the drone fly over an unexplored cell?
 	let flownOver = map.getCell(Math.floor(drone.x), Math.floor(drone.y))
-	if (flownOver != lastFlownOver) {
-		lastFlownOver = flownOver;
+	if (flownOver != currentCell) {
+		currentCell = flownOver;
 		onEnterCell(flownOver);
 	}
 }
@@ -154,7 +158,10 @@ function onEnterCell(cell: MapCell) {
 		mapRenderer.updateFacesColor()
 	}
 
-	// Update UI
+	updateButtonsState(cell)
+}
+
+function updateButtonsState(cell: MapCell) {
 	let isEmpty = !cell.isBuilt()
 	setButtonState(buildAccumulator, isEmpty && cell.type === CellType.Ground)
 	setButtonState(buildSolar, isEmpty && cell.type === CellType.Ground)

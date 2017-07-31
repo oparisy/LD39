@@ -1,4 +1,9 @@
+import { MapCell } from './worldmap'
+
 export class Building {
+
+    constructor(type: BuildingType, location: MapCell) { }
+
     public static getDescription(type: BuildingType) {
         switch (type) {
             case BuildingType.Accumulator:

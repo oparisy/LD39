@@ -52,4 +52,11 @@ Bilan première journée :
  * gain réel de productivité three.js en utilisant ses mécanismes "standards"
  * CSS / HTML : pas suffisament rodé, préparer snippets à l'avance et limiter besoins durant LD
  * jeu plus avancé qu'habituellement à ce stade
- 
+
+Seconde journée
+
+Travail UI facilité par HTML/CSS maintenant que le gros de l'interface est calé
+
+J'anticipe des difficultés dans le positionnement des bâtiments si je déforme la géométrie du plan
+pour créer des reliefs. On est trop dépendants de sa structure
+=> il aurait fallu créer et maintenir la géométrie nous-mêmes dès le début
