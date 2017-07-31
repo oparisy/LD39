@@ -14,15 +14,19 @@ import { DroneRenderer } from './render/dronerenderer'
 import { BoundElement } from './ui/boundelement'
 import { Overlay } from './ui/overlay'
 
-let CITY_CONSUMPTION = 0 // kW
-let ENERGY_PRICE = 5 // creds/kWh
-let WINNING_DAY = 6 // Number of days before winning
 
 /** The first game day starts at 8 AM */
 const START_HOUR = 8
 
-/** One player minute => 8 in-game hours */
-const GAME_HOURS_PER_PLAYER_MINUTE = 8
+const START_CREDITS = 1000
+const GRACE_DELAY = START_HOUR + 4 // After this date (in hours), the city will start increasingly consuming energy
+const CITY_CONSUMPTION_INCREMENT_AFTER_GRACE_DELAY = 1000 // kW?
+const CITY_CONSUMPTION_FACTOR_AT_NIGHT = 0.75
+const ENERGY_PRICE = 0.3 // creds/kWh
+const WINNING_DAY = 6 // Number of days before winning
+
+/** One player minute => 12 in-game hours */
+const GAME_HOURS_PER_PLAYER_MINUTE = 12
 
 // TODO Clean this up; no global code
 
@@ -109,13 +113,13 @@ let buildResearch = document.getElementById('buildResearch')
 let infos = document.getElementById('infos')
 
 // Bind UI numeric values
-let credits = new BoundElement(document.getElementById('credits'), 0)
+let credits = new BoundElement(document.getElementById('credits'), START_CREDITS)
 let power = new BoundElement(document.getElementById('power'), 0)
 let maxPower = new BoundElement(document.getElementById('maxpower'), 0)
 let incPower = new BoundElement(document.getElementById('incpower'), 0)
 let decPower = new BoundElement(document.getElementById('decpower'), 0)
-let gameTime = new BoundElement(document.getElementById('timeOfDay'), START_HOUR, timeConverter) // The current game time, in hours
-let elapsed = new BoundElement(document.getElementById('day'), START_HOUR, dayConverter) // Total elapsed game time, in hours
+let gameTimeOfDay = new BoundElement(document.getElementById('timeOfDay'), START_HOUR, timeConverter) // The current game time, in hours
+let gameTimeElapsed = new BoundElement(document.getElementById('day'), START_HOUR, dayConverter) // Total elapsed game time, in hours
 let winningDay = new BoundElement(document.getElementById('winningDay'), WINNING_DAY)
 
 function timeConverter(time: number) {
@@ -149,6 +153,7 @@ for (let bt of buildButtons) {
 
 function onButtonClick(bt, type) {
 	if (!bt.classList.contains('disabled') && currentCell != null) {
+		credits.value -= Building.getCost(type)
 		map.buildBuilding(type, currentCell)
 		mapRenderer.cellBuilt(currentCell)
 		updateButtonsState(currentCell)
@@ -202,6 +207,9 @@ function updateSimulationAndScene(dt: number) {
 	// Perform power and cost simulation
 	outcome = updateCounters(dt)
 
+	// Misc. conditions may have changed; update buttons accordingly
+	updateButtonsState(flownOver)
+
 	// React to simulation outcome
 	if (outcome === GameResult.GameOver) {
 		let title = 'Game Over'
@@ -235,17 +243,15 @@ function onEnterCell(cell: MapCell) {
 		cell.explored = true
 		mapRenderer.updateFacesColor()
 	}
-
-	updateButtonsState(cell)
 }
 
 function updateButtonsState(cell: MapCell) {
 	let isEmpty = !cell.isBuilt()
-	setButtonState(buildAccumulator, isEmpty && cell.type === CellType.Ground)
-	setButtonState(buildSolar, isEmpty && cell.type === CellType.Ground)
-	setButtonState(buildWindmill, isEmpty && cell.type === CellType.Ground)
-	setButtonState(buildGeothermal, isEmpty && cell.type === CellType.Fumarole)
-	setButtonState(buildResearch, isEmpty && cell.type === CellType.Ground)
+	setButtonState(buildAccumulator, isEmpty && cell.type === CellType.Ground && credits.value >= Building.getCost(BuildingType.Accumulator))
+	setButtonState(buildSolar, isEmpty && cell.type === CellType.Ground && credits.value >= Building.getCost(BuildingType.SolarPanel))
+	setButtonState(buildWindmill, isEmpty && cell.type === CellType.Ground && credits.value >= Building.getCost(BuildingType.Windmill))
+	setButtonState(buildGeothermal, isEmpty && cell.type === CellType.Fumarole && credits.value >= Building.getCost(BuildingType.Geothermal))
+	setButtonState(buildResearch, isEmpty && cell.type === CellType.Ground && credits.value >= Building.getCost(BuildingType.Research))
 }
 
 /** Enable of disable button.
@@ -267,11 +273,11 @@ function updateCounters(dt): GameResult {
 	let outcome = GameResult.GoingOn
 
 	// Convert player minute to hours in game
-	let elapsedGameTimeInHour = GAME_HOURS_PER_PLAYER_MINUTE * dt / 60
-	gameTime.value = (gameTime.value + elapsedGameTimeInHour) % 24
-	elapsed.value += elapsedGameTimeInHour
+	let dtInGameHours = GAME_HOURS_PER_PLAYER_MINUTE * dt / 60
+	gameTimeOfDay.value = (gameTimeOfDay.value + dtInGameHours) % 24
+	gameTimeElapsed.value += dtInGameHours
 
-	if (elapsed.value >= WINNING_DAY * 24) {
+	if (gameTimeElapsed.value >= WINNING_DAY * 24) {
 		outcome = GameResult.Won
 	}
 
@@ -283,27 +289,29 @@ function updateCounters(dt): GameResult {
 
 	// Take buildings into account
 	for (let building of map.buildings) {
-		production += building.getProduction(gameTime.value)
+		production += building.getProduction(gameTimeOfDay.value)
 		consumption += building.getConsumption()
 		storageCapacity += building.getStorageCapacity()
 	}
 
+	// The city takes its toll
+	let cityConsumption = getCityConsumption(gameTimeOfDay.value, gameTimeElapsed.value)
+	consumption += cityConsumption
+
 	// Update storage
-	let instantProduction = (production - consumption) * elapsedGameTimeInHour // kWh
+	let instantProduction = (production - consumption) * dtInGameHours // kWh
 	currentStorage += instantProduction
 	currentStorage = Math.min(currentStorage, storageCapacity)
 
 	if (currentStorage < 0) {
+		// We could not provide enough power...
 		outcome = GameResult.GameOver
 		currentStorage = 0 // Avoid screwing the UI
+	} else {
+		// The city pays us in return
+		let instantCityConsumption = cityConsumption * dtInGameHours // kWh
+		credits.value += instantCityConsumption * getEnergyPrice()
 	}
-
-	// The city takes its toll
-	let instantCityConsumption = getCityConsumption(gameTime.value) * elapsedGameTimeInHour // kWh
-	currentStorage -= instantCityConsumption
-
-	// The city pays us in return
-	credits.value += instantCityConsumption * getEnergyPrice()
 
 	// Update UI
 	power.value = currentStorage
@@ -314,10 +322,19 @@ function updateCounters(dt): GameResult {
 	return outcome
 }
 
-/** Return the city instant consumption in kW.
-	TODO Should be a function of time of day */
-function getCityConsumption(currentGameTime) {
-	return CITY_CONSUMPTION;
+/** Return the city instant consumption in kW */
+function getCityConsumption(currentGameTimeOfDay, elapsedGameTime) {
+	let comsumption = elapsedGameTime < GRACE_DELAY ? 0 : (CITY_CONSUMPTION_INCREMENT_AFTER_GRACE_DELAY * (elapsedGameTime - GRACE_DELAY) / 24)
+	if (isNightTime(currentGameTimeOfDay)) {
+		// Less consumption at night
+		comsumption *= CITY_CONSUMPTION_FACTOR_AT_NIGHT
+	}
+	return comsumption;
+}
+
+/** TODO This condition is duplicated in Building */
+function isNightTime(currentGameTimeOfDay) {
+	return currentGameTimeOfDay < 6 || currentGameTimeOfDay > 22
 }
 
 /** Return the current energy price (in credits per kWh) */

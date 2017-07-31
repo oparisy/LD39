@@ -33,3 +33,5 @@
 16h30 Packaging OK, première publication GitHub faite
 17h55 Entrée pour le jeu créée sur ldjam.com ; début travail sur UI popup
 18h40 UI gagné / perdu terminée ; pause
+18h55 Travail sur dernières constantes à zéro
+20h35 Fin travail de prise en compte constantes et debugging ; pause

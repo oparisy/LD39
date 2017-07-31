@@ -21,7 +21,7 @@ Lundi (essentiels) :
  * [Fait] Vérifier qu'on sait faire un build ; le publier
  * [Fait] Créer entrée jeu sur ldjam.com
  * [Fait] Feedback gagné / perdu
- * Finir d'implémenter dépenses et constantes encore à zéro
+ * [Fait] Finir d'implémenter dépenses et constantes encore à zéro
  * Recherche => restrictions constructions, simulation de son évolution
 
 Ensuite :
@@ -41,4 +41,4 @@ Ensuite :
  * animations
  * Intensité mouvements arbres => indice de l'intensité du vent
  * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué, améliore reveal ; impact du + 0.5?)
- 
+
