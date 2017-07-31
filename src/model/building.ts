@@ -2,6 +2,10 @@ import { MapCell } from './worldmap'
 
 export class Building {
 
+    public static improvedAccumulators = false
+    public static improvedSolarPanels = false
+    public static improvedWindTurbines = false
+
     static readonly ACCUMULATOR_CAPACITY = 100
     static readonly ACCUMULATOR_COST = 75
     static readonly SOLARPANEL_PRODUCTION_MAX = 10
@@ -10,7 +14,7 @@ export class Building {
     static readonly WINDMILL_COST = 150
     static readonly GEOTHERMAL_PRODUCTION = 1000
     static readonly GEOTHERMAL_COST = 1000
-    static readonly RESEARCH_BASE_CONSUMPTION = 100
+    static readonly RESEARCH_BASE_CONSUMPTION = 1000
     static readonly RESEARCH_COST = 500
 
     constructor(private type: BuildingType, private location: MapCell) { }
@@ -28,10 +32,12 @@ export class Building {
                     let efficiency = (currentGameTime < 14) ?
                         (currentGameTime - 6) / (14 - 6) :
                         (22 - currentGameTime) / (22 - 14)
-                    return efficiency * Building.SOLARPANEL_PRODUCTION_MAX
+                    let result = efficiency * Building.SOLARPANEL_PRODUCTION_MAX
+                    return Building.improvedAccumulators ? result * 2 : result
                 }
-            case BuildingType.Windmill:
-                return this.location.windEfficiency * Building.WINDMILL_PRODUCTION_MAX
+            case BuildingType.WindTurbine:
+                let result = this.location.windEfficiency * Building.WINDMILL_PRODUCTION_MAX
+                return Building.improvedWindTurbines ? result * 2 : result
             case BuildingType.Geothermal:
                 return Building.GEOTHERMAL_PRODUCTION
             case BuildingType.Research:
@@ -52,7 +58,8 @@ export class Building {
     /** Return the building energy storage, in kWh */
     public getStorageCapacity(): number {
         switch (this.type) {
-            case BuildingType.Accumulator: return Building.ACCUMULATOR_CAPACITY
+            case BuildingType.Accumulator:
+                return Building.improvedAccumulators ? Building.ACCUMULATOR_CAPACITY * 2 : Building.ACCUMULATOR_CAPACITY
             default: return 0
         }
     }
@@ -62,7 +69,7 @@ export class Building {
         switch (type) {
             case BuildingType.Accumulator: return Building.ACCUMULATOR_COST
             case BuildingType.SolarPanel: return Building.SOLARPANEL_COST
-            case BuildingType.Windmill: return Building.WINDMILL_COST
+            case BuildingType.WindTurbine: return Building.WINDMILL_COST
             case BuildingType.Geothermal: return Building.GEOTHERMAL_COST
             case BuildingType.Research: return Building.RESEARCH_COST
             default:
@@ -90,9 +97,9 @@ export class Building {
                 <p class='text'>Max production: ${Building.SOLARPANEL_PRODUCTION_MAX} kW</p>
                 <p class='text'>Cost: ${Building.SOLARPANEL_COST} credits</p>`
 
-            case BuildingType.Windmill:
+            case BuildingType.WindTurbine:
                 return `
-                <p class='title'>Windmill</p>
+                <p class='title'>Wind Turbine</p>
                 <p class='text'>A good source of energy. Power output will depend of the implantation zone.<p>
                 <p class='text'>Can be built on any non-constructed ground zone.</p>
                 <br/>
@@ -111,11 +118,11 @@ export class Building {
             case BuildingType.Research:
                 return `
                 <p class='title'>Research Facility</p>
-                <p class='text'>Use this to research energy sources improvements.<p>
+                <p class='text'>Use one to research energy sources improvements.<p>
                 <p class='text'>Can be built on any non-constructed ground zone.</p>
                 <br/>
-                <p class='text'>Base consumption: ${Building.RESEARCH_BASE_CONSUMPTION} kW</p>
-                <p class='text'>Cost: ${Building.GEOTHERMAL_COST} credits</p>`
+                <p class='text'>Consumption: ${Building.RESEARCH_BASE_CONSUMPTION} kW</p>
+                <p class='text'>Cost: ${Building.RESEARCH_COST} credits</p>`
 
             default:
                 return "<span class='error'>No description for this building</span>";
@@ -124,5 +131,5 @@ export class Building {
 }
 
 export enum BuildingType {
-    Accumulator, SolarPanel, Windmill, Geothermal, Research
+    Accumulator, SolarPanel, WindTurbine, Geothermal, Research
 }

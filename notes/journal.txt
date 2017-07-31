@@ -98,3 +98,5 @@ Pour le dialogue utilisateur, finalement : un overlay HTML.
 Permet de garder le jeu inactif en transparence et de contrôler facilement le layout.
 
 Pas de chance (?), github a des soucis de serveurs (pour la publication des pages en particulier)
+
+Objectifs priorisés atteints avant 22h30 !

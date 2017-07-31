@@ -25,8 +25,8 @@ body {
 	font-size: 24px;
 	border-style: solid;
 	border-radius: 5px;
-	align-self: flex-start; /* "strech" to take all vert. space */
-	height: 80%;
+	align-self: center; /* "flex-start" to stick to top, stretch" to take all vert. space */
+	height: 91%; /* 80% was nice before research buttons */
 }
 
 #map {

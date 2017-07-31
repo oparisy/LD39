@@ -12,7 +12,7 @@
  * [Fait] CSS minimale pour organiser la page (emplacement carte + compteurs et menu contextuel en HTML)
  * [Fait] Compteurs ; interface à la "total anihilation" (cf. http://jolstatic.fr/www/captures/1941/0/82790.jpg)
 
-Lundi (essentiels) :
+Lundi :
  * [Fait] Zone textuelle pour expliquer fonction éléments en hover (boutons)
  * [Fait] Construction de bâtiments (tous disponibles dans un premier temps)
  * [Fait] Mises à jour compteurs (simulation gains / coûts)
@@ -22,23 +22,20 @@ Lundi (essentiels) :
  * [Fait] Créer entrée jeu sur ldjam.com
  * [Fait] Feedback gagné / perdu
  * [Fait] Finir d'implémenter dépenses et constantes encore à zéro
- * Recherche => restrictions constructions, simulation de son évolution
+ * [Fait] Recherche => restrictions constructions, simulation de son évolution
+ * [Fait] Polish gameplay
 
 Ensuite :
  * Améliorer caméra
- * Accueil / flot de pages
- * polish gameplay
  * Améliorer champ de vision drone (3x3)
  * Améliorer génération arbres et eau via automates
- * Zone textuelle pour expliquer fonction éléments en hover (canvas, compteurs)
  * Vérifier qu'on sait charger un modèle glTF (arbre ou rocher lowpoly)
  * modèles bâtiments
- * Modèle drone
  * Debugger ombre drone, en ajouter aux autres éléments
  * polish rendu / shaders
  * assets "décoratifs" hors gameplay (arbres, etc.)
  * Shader eau
  * animations
- * Intensité mouvements arbres => indice de l'intensité du vent
+ * Accueil / flot de pages
+ * Modèle drone
  * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué, améliore reveal ; impact du + 0.5?)
-

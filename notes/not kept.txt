@@ -23,3 +23,11 @@ Idée trop longues / pas retenues :
     Sons / musique
 
     Packaging "minified"
+
+    Géothermie nécessite recherche (1000 creds)
+
+    Durée des recherches
+
+    Zone textuelle pour expliquer fonction éléments en hover (canvas, compteurs)
+
+    Intensité mouvements arbres => indice de l'intensité du vent

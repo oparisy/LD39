@@ -7,6 +7,7 @@ import * as TWEEN from 'tween.js'
 import { WorldMap, MapCell, CellType } from './model/worldmap'
 import { Drone } from './model/drone'
 import { Building, BuildingType } from './model/building'
+import { Research, ResearchType } from './model/research'
 
 import { MapRenderer } from './render/maprenderer'
 import { DroneRenderer } from './render/dronerenderer'
@@ -19,11 +20,11 @@ import { Overlay } from './ui/overlay'
 const START_HOUR = 8
 
 const START_CREDITS = 1000
-const GRACE_DELAY = START_HOUR + 4 // After this date (in hours), the city will start increasingly consuming energy
+const GRACE_DELAY = START_HOUR + 8 // After this date (in hours), the city will start increasingly consuming energy
 const CITY_CONSUMPTION_INCREMENT_AFTER_GRACE_DELAY = 1000 // kW?
 const CITY_CONSUMPTION_FACTOR_AT_NIGHT = 0.75
 const ENERGY_PRICE = 0.3 // creds/kWh
-const WINNING_DAY = 6 // Number of days before winning
+const WINNING_DAY = 5 // Number of days before winning
 
 /** One player minute => 12 in-game hours */
 const GAME_HOURS_PER_PLAYER_MINUTE = 12
@@ -134,10 +135,12 @@ function dayConverter(time: number) {
 	return (1 + Math.floor(time / 24)).toString()
 }
 
+let researchFacilityConstructed = false
+
 // Enrich button to ease following code
 buildAccumulator['buildingType'] = BuildingType.Accumulator
 buildSolar['buildingType'] = BuildingType.SolarPanel
-buildWindmill['buildingType'] = BuildingType.Windmill
+buildWindmill['buildingType'] = BuildingType.WindTurbine
 buildGeothermal['buildingType'] = BuildingType.Geothermal
 buildResearch['buildingType'] = BuildingType.Research
 let buildButtons = [buildAccumulator, buildSolar, buildWindmill, buildGeothermal, buildResearch]
@@ -146,17 +149,84 @@ let buildButtons = [buildAccumulator, buildSolar, buildWindmill, buildGeothermal
 canvas.addEventListener('mousedown', onDocumentMouseDown, false)
 for (let bt of buildButtons) {
 	let type = bt['buildingType']
-	bt.addEventListener('click', function () { onButtonClick(bt, type) });
+	bt.addEventListener('click', function () { onBuildButtonClick(bt, type) });
 	bt.addEventListener('mouseenter', function () { setDescription(Building.getDescription(type)) })
 	bt.addEventListener('mouseleave', function () { clearDescription() })
 }
 
-function onButtonClick(bt, type) {
+function onBuildButtonClick(bt, type) {
 	if (!bt.classList.contains('disabled') && currentCell != null) {
 		credits.value -= Building.getCost(type)
 		map.buildBuilding(type, currentCell)
 		mapRenderer.cellBuilt(currentCell)
+
+		if (type == BuildingType.Research && !researchFacilityConstructed) {
+			researchFacilityConstructed = true
+			addResearchButtons()
+		}
+
 		updateButtonsState(currentCell)
+	}
+}
+
+let researchAccumulator: HTMLButtonElement = undefined
+let researchSolarPanel: HTMLButtonElement = undefined
+let researchWindTurbine: HTMLButtonElement = undefined
+
+function addResearchButtons() {
+	let container = document.getElementById('actionButtonsContainer')
+	container.removeChild(buildResearch)
+
+	researchAccumulator = buildResearchButton(ResearchType.Accumulator)
+	researchSolarPanel = buildResearchButton(ResearchType.SolarPanel)
+	researchWindTurbine = buildResearchButton(ResearchType.WindTurbine)
+	container.appendChild(researchAccumulator)
+	container.appendChild(researchSolarPanel)
+	container.appendChild(researchWindTurbine)
+}
+
+function buildResearchButton(type: ResearchType): HTMLButtonElement {
+	let bt = document.createElement('button')
+	bt.classList.add('actionButton')
+	bt.innerText = Research.getShortDescription(type)
+	bt.addEventListener('click', function () { onResearchButtonClick(bt, type) });
+	bt.addEventListener('mouseenter', function () { setDescription(Research.getDescription(type)) })
+	bt.addEventListener('mouseleave', function () { clearDescription() })
+	return bt
+}
+
+function onResearchButtonClick(bt, type) {
+	if (!bt.classList.contains('disabled')) {
+		credits.value -= Research.getCost(type)
+		switch (type) {
+			case ResearchType.Accumulator:
+				Building.improvedAccumulators = true; break;
+			case ResearchType.SolarPanel:
+				Building.improvedSolarPanels = true; break;
+			case ResearchType.WindTurbine:
+				Building.improvedWindTurbines = true; break;
+			default:
+				throw new Error('Missing switch case')
+		}
+
+		let container = document.getElementById('actionButtonsContainer')
+		container.removeChild(bt)
+
+		updateButtonsState(currentCell)
+	}
+}
+
+function updateResearchButtonsState() {
+	if (researchFacilityConstructed) {
+		if (!Building.improvedAccumulators) {
+			setButtonState(researchAccumulator, credits.value >= Research.getCost(ResearchType.Accumulator))
+		}
+		if (!Building.improvedSolarPanels) {
+			setButtonState(researchSolarPanel, credits.value >= Research.getCost(ResearchType.SolarPanel))
+		}
+		if (!Building.improvedWindTurbines) {
+			setButtonState(researchWindTurbine, credits.value >= Research.getCost(ResearchType.WindTurbine))
+		}
 	}
 }
 
@@ -249,9 +319,11 @@ function updateButtonsState(cell: MapCell) {
 	let isEmpty = !cell.isBuilt()
 	setButtonState(buildAccumulator, isEmpty && cell.type === CellType.Ground && credits.value >= Building.getCost(BuildingType.Accumulator))
 	setButtonState(buildSolar, isEmpty && cell.type === CellType.Ground && credits.value >= Building.getCost(BuildingType.SolarPanel))
-	setButtonState(buildWindmill, isEmpty && cell.type === CellType.Ground && credits.value >= Building.getCost(BuildingType.Windmill))
+	setButtonState(buildWindmill, isEmpty && cell.type === CellType.Ground && credits.value >= Building.getCost(BuildingType.WindTurbine))
 	setButtonState(buildGeothermal, isEmpty && cell.type === CellType.Fumarole && credits.value >= Building.getCost(BuildingType.Geothermal))
-	setButtonState(buildResearch, isEmpty && cell.type === CellType.Ground && credits.value >= Building.getCost(BuildingType.Research))
+	setButtonState(buildResearch, isEmpty && cell.type === CellType.Ground && credits.value >= Building.getCost(BuildingType.Research) && !researchFacilityConstructed)
+
+	updateResearchButtonsState()
 }
 
 /** Enable of disable button.

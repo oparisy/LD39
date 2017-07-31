@@ -35,3 +35,5 @@
 18h40 UI gagné / perdu terminée ; pause
 18h55 Travail sur dernières constantes à zéro
 20h35 Fin travail de prise en compte constantes et debugging ; pause
+20h55 Début travail sur recherche
+22h30 Commit travail recherche ; objectifs priorisés atteints !

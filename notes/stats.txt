@@ -22,7 +22,6 @@
         
     Géothermie
         Source stable d'énergie mais coûteuse à mettre en place
-        Nécessite recherche (1000 creds)
         Coût : 1000 creds
         Temps de production du bâtiment : 30s
         Produit : 1000 kW

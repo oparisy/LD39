@@ -44302,10 +44302,12 @@ class Building {
                     let efficiency = (currentGameTime < 14) ?
                         (currentGameTime - 6) / (14 - 6) :
                         (22 - currentGameTime) / (22 - 14);
-                    return efficiency * Building.SOLARPANEL_PRODUCTION_MAX;
+                    let result = efficiency * Building.SOLARPANEL_PRODUCTION_MAX;
+                    return Building.improvedAccumulators ? result * 2 : result;
                 }
-            case BuildingType.Windmill:
-                return this.location.windEfficiency * Building.WINDMILL_PRODUCTION_MAX;
+            case BuildingType.WindTurbine:
+                let result = this.location.windEfficiency * Building.WINDMILL_PRODUCTION_MAX;
+                return Building.improvedWindTurbines ? result * 2 : result;
             case BuildingType.Geothermal:
                 return Building.GEOTHERMAL_PRODUCTION;
             case BuildingType.Research:
@@ -44324,7 +44326,8 @@ class Building {
     /** Return the building energy storage, in kWh */
     getStorageCapacity() {
         switch (this.type) {
-            case BuildingType.Accumulator: return Building.ACCUMULATOR_CAPACITY;
+            case BuildingType.Accumulator:
+                return Building.improvedAccumulators ? Building.ACCUMULATOR_CAPACITY * 2 : Building.ACCUMULATOR_CAPACITY;
             default: return 0;
         }
     }
@@ -44333,7 +44336,7 @@ class Building {
         switch (type) {
             case BuildingType.Accumulator: return Building.ACCUMULATOR_COST;
             case BuildingType.SolarPanel: return Building.SOLARPANEL_COST;
-            case BuildingType.Windmill: return Building.WINDMILL_COST;
+            case BuildingType.WindTurbine: return Building.WINDMILL_COST;
             case BuildingType.Geothermal: return Building.GEOTHERMAL_COST;
             case BuildingType.Research: return Building.RESEARCH_COST;
             default:
@@ -44358,9 +44361,9 @@ class Building {
                 <br/>
                 <p class='text'>Max production: ${Building.SOLARPANEL_PRODUCTION_MAX} kW</p>
                 <p class='text'>Cost: ${Building.SOLARPANEL_COST} credits</p>`;
-            case BuildingType.Windmill:
+            case BuildingType.WindTurbine:
                 return `
-                <p class='title'>Windmill</p>
+                <p class='title'>Wind Turbine</p>
                 <p class='text'>A good source of energy. Power output will depend of the implantation zone.<p>
                 <p class='text'>Can be built on any non-constructed ground zone.</p>
                 <br/>
@@ -44377,16 +44380,19 @@ class Building {
             case BuildingType.Research:
                 return `
                 <p class='title'>Research Facility</p>
-                <p class='text'>Use this to research energy sources improvements.<p>
+                <p class='text'>Use one to research energy sources improvements.<p>
                 <p class='text'>Can be built on any non-constructed ground zone.</p>
                 <br/>
-                <p class='text'>Base consumption: ${Building.RESEARCH_BASE_CONSUMPTION} kW</p>
-                <p class='text'>Cost: ${Building.GEOTHERMAL_COST} credits</p>`;
+                <p class='text'>Consumption: ${Building.RESEARCH_BASE_CONSUMPTION} kW</p>
+                <p class='text'>Cost: ${Building.RESEARCH_COST} credits</p>`;
             default:
                 return "<span class='error'>No description for this building</span>";
         }
     }
 }
+Building.improvedAccumulators = false;
+Building.improvedSolarPanels = false;
+Building.improvedWindTurbines = false;
 Building.ACCUMULATOR_CAPACITY = 100;
 Building.ACCUMULATOR_COST = 75;
 Building.SOLARPANEL_PRODUCTION_MAX = 10;
@@ -44395,14 +44401,14 @@ Building.WINDMILL_PRODUCTION_MAX = 100;
 Building.WINDMILL_COST = 150;
 Building.GEOTHERMAL_PRODUCTION = 1000;
 Building.GEOTHERMAL_COST = 1000;
-Building.RESEARCH_BASE_CONSUMPTION = 100;
+Building.RESEARCH_BASE_CONSUMPTION = 1000;
 Building.RESEARCH_COST = 500;
 exports.Building = Building;
 var BuildingType;
 (function (BuildingType) {
     BuildingType[BuildingType["Accumulator"] = 0] = "Accumulator";
     BuildingType[BuildingType["SolarPanel"] = 1] = "SolarPanel";
-    BuildingType[BuildingType["Windmill"] = 2] = "Windmill";
+    BuildingType[BuildingType["WindTurbine"] = 2] = "WindTurbine";
     BuildingType[BuildingType["Geothermal"] = 3] = "Geothermal";
     BuildingType[BuildingType["Research"] = 4] = "Research";
 })(BuildingType = exports.BuildingType || (exports.BuildingType = {}));
@@ -44523,18 +44529,19 @@ const THREE = __webpack_require__(0);
 const worldmap_1 = __webpack_require__(1);
 const drone_1 = __webpack_require__(11);
 const building_1 = __webpack_require__(2);
+const research_1 = __webpack_require__(12);
 const maprenderer_1 = __webpack_require__(3);
-const dronerenderer_1 = __webpack_require__(12);
-const boundelement_1 = __webpack_require__(13);
-const overlay_1 = __webpack_require__(14);
+const dronerenderer_1 = __webpack_require__(13);
+const boundelement_1 = __webpack_require__(14);
+const overlay_1 = __webpack_require__(15);
 /** The first game day starts at 8 AM */
 const START_HOUR = 8;
 const START_CREDITS = 1000;
-const GRACE_DELAY = START_HOUR + 4; // After this date (in hours), the city will start increasingly consuming energy
+const GRACE_DELAY = START_HOUR + 8; // After this date (in hours), the city will start increasingly consuming energy
 const CITY_CONSUMPTION_INCREMENT_AFTER_GRACE_DELAY = 1000; // kW?
 const CITY_CONSUMPTION_FACTOR_AT_NIGHT = 0.75;
 const ENERGY_PRICE = 0.3; // creds/kWh
-const WINNING_DAY = 6; // Number of days before winning
+const WINNING_DAY = 5; // Number of days before winning
 /** One player minute => 12 in-game hours */
 const GAME_HOURS_PER_PLAYER_MINUTE = 12;
 // TODO Clean this up; no global code
@@ -44621,10 +44628,11 @@ function timeConverter(time) {
 function dayConverter(time) {
     return (1 + Math.floor(time / 24)).toString();
 }
+let researchFacilityConstructed = false;
 // Enrich button to ease following code
 buildAccumulator['buildingType'] = building_1.BuildingType.Accumulator;
 buildSolar['buildingType'] = building_1.BuildingType.SolarPanel;
-buildWindmill['buildingType'] = building_1.BuildingType.Windmill;
+buildWindmill['buildingType'] = building_1.BuildingType.WindTurbine;
 buildGeothermal['buildingType'] = building_1.BuildingType.Geothermal;
 buildResearch['buildingType'] = building_1.BuildingType.Research;
 let buildButtons = [buildAccumulator, buildSolar, buildWindmill, buildGeothermal, buildResearch];
@@ -44632,16 +44640,76 @@ let buildButtons = [buildAccumulator, buildSolar, buildWindmill, buildGeothermal
 canvas.addEventListener('mousedown', onDocumentMouseDown, false);
 for (let bt of buildButtons) {
     let type = bt['buildingType'];
-    bt.addEventListener('click', function () { onButtonClick(bt, type); });
+    bt.addEventListener('click', function () { onBuildButtonClick(bt, type); });
     bt.addEventListener('mouseenter', function () { setDescription(building_1.Building.getDescription(type)); });
     bt.addEventListener('mouseleave', function () { clearDescription(); });
 }
-function onButtonClick(bt, type) {
+function onBuildButtonClick(bt, type) {
     if (!bt.classList.contains('disabled') && currentCell != null) {
         credits.value -= building_1.Building.getCost(type);
         map.buildBuilding(type, currentCell);
         mapRenderer.cellBuilt(currentCell);
+        if (type == building_1.BuildingType.Research && !researchFacilityConstructed) {
+            researchFacilityConstructed = true;
+            addResearchButtons();
+        }
         updateButtonsState(currentCell);
+    }
+}
+let researchAccumulator = undefined;
+let researchSolarPanel = undefined;
+let researchWindTurbine = undefined;
+function addResearchButtons() {
+    let container = document.getElementById('actionButtonsContainer');
+    container.removeChild(buildResearch);
+    researchAccumulator = buildResearchButton(research_1.ResearchType.Accumulator);
+    researchSolarPanel = buildResearchButton(research_1.ResearchType.SolarPanel);
+    researchWindTurbine = buildResearchButton(research_1.ResearchType.WindTurbine);
+    container.appendChild(researchAccumulator);
+    container.appendChild(researchSolarPanel);
+    container.appendChild(researchWindTurbine);
+}
+function buildResearchButton(type) {
+    let bt = document.createElement('button');
+    bt.classList.add('actionButton');
+    bt.innerText = research_1.Research.getShortDescription(type);
+    bt.addEventListener('click', function () { onResearchButtonClick(bt, type); });
+    bt.addEventListener('mouseenter', function () { setDescription(research_1.Research.getDescription(type)); });
+    bt.addEventListener('mouseleave', function () { clearDescription(); });
+    return bt;
+}
+function onResearchButtonClick(bt, type) {
+    if (!bt.classList.contains('disabled')) {
+        credits.value -= research_1.Research.getCost(type);
+        switch (type) {
+            case research_1.ResearchType.Accumulator:
+                building_1.Building.improvedAccumulators = true;
+                break;
+            case research_1.ResearchType.SolarPanel:
+                building_1.Building.improvedSolarPanels = true;
+                break;
+            case research_1.ResearchType.WindTurbine:
+                building_1.Building.improvedWindTurbines = true;
+                break;
+            default:
+                throw new Error('Missing switch case');
+        }
+        let container = document.getElementById('actionButtonsContainer');
+        container.removeChild(bt);
+        updateButtonsState(currentCell);
+    }
+}
+function updateResearchButtonsState() {
+    if (researchFacilityConstructed) {
+        if (!building_1.Building.improvedAccumulators) {
+            setButtonState(researchAccumulator, credits.value >= research_1.Research.getCost(research_1.ResearchType.Accumulator));
+        }
+        if (!building_1.Building.improvedSolarPanels) {
+            setButtonState(researchSolarPanel, credits.value >= research_1.Research.getCost(research_1.ResearchType.SolarPanel));
+        }
+        if (!building_1.Building.improvedWindTurbines) {
+            setButtonState(researchWindTurbine, credits.value >= research_1.Research.getCost(research_1.ResearchType.WindTurbine));
+        }
     }
 }
 function setDescription(htmlText) {
@@ -44719,9 +44787,10 @@ function updateButtonsState(cell) {
     let isEmpty = !cell.isBuilt();
     setButtonState(buildAccumulator, isEmpty && cell.type === worldmap_1.CellType.Ground && credits.value >= building_1.Building.getCost(building_1.BuildingType.Accumulator));
     setButtonState(buildSolar, isEmpty && cell.type === worldmap_1.CellType.Ground && credits.value >= building_1.Building.getCost(building_1.BuildingType.SolarPanel));
-    setButtonState(buildWindmill, isEmpty && cell.type === worldmap_1.CellType.Ground && credits.value >= building_1.Building.getCost(building_1.BuildingType.Windmill));
+    setButtonState(buildWindmill, isEmpty && cell.type === worldmap_1.CellType.Ground && credits.value >= building_1.Building.getCost(building_1.BuildingType.WindTurbine));
     setButtonState(buildGeothermal, isEmpty && cell.type === worldmap_1.CellType.Fumarole && credits.value >= building_1.Building.getCost(building_1.BuildingType.Geothermal));
-    setButtonState(buildResearch, isEmpty && cell.type === worldmap_1.CellType.Ground && credits.value >= building_1.Building.getCost(building_1.BuildingType.Research));
+    setButtonState(buildResearch, isEmpty && cell.type === worldmap_1.CellType.Ground && credits.value >= building_1.Building.getCost(building_1.BuildingType.Research) && !researchFacilityConstructed);
+    updateResearchButtonsState();
 }
 /** Enable of disable button.
  * We do not use .disabled as we would lose the mouse events used for descriptions */
@@ -44859,7 +44928,7 @@ exports = module.exports = __webpack_require__(8)(undefined);
 
 
 // module
-exports.push([module.i, "/* Styles go here. */\r\n\r\nhtml, body {\r\n\tmargin: 0;\r\n\tpadding: 0;\r\n\theight: 100%;\r\n}\r\n\r\n/* body is a flexbox container with an horizontal distribution */\r\nbody {\r\n\tdisplay: flex;\r\n\tflex-direction: row;\r\n\tflex-wrap: nowrap;\r\n\tjustify-content: flex-start;\r\n\talign-items: stretch;\r\n\tbackground-color: black;\r\n}\r\n\r\n/** TODO Consider using a flexbox container */\r\n#ui {\r\n\twidth: 300px;\r\n\tpadding: 12px;\r\n\tcolor: white;\r\n\tfont-family: Sans-Serif;\r\n\tfont-size: 24px;\r\n\tborder-style: solid;\r\n\tborder-radius: 5px;\r\n\talign-self: flex-start; /* \"strech\" to take all vert. space */\r\n\theight: 80%;\r\n}\r\n\r\n#map {\r\n\talign-self: flex-end;\r\n}\r\n\r\n#counters {\r\n\tcolor:white;\r\n}\r\n\r\n.posValue {\r\n\tcolor: green;\r\n}\r\n\r\n.negValue {\r\n\tcolor: firebrick;\r\n}\r\n\r\n/* A flexbox container with vertical distribution */\r\n#actionButtonsContainer {\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tjustify-content: flex-start;\r\n}\r\n\r\n.counterLabel {\r\n\t/* Required for width to have an effect (https://stackoverflow.com/a/257524/38096) */\r\n\tfloat: left;\r\n\twidth: 4em;\r\n}\r\n\r\n.actionButton {\r\n\tbackground-color: #4CAF50;\r\n\tborder: none;\r\n\tcolor: white;\r\n\tpadding: 12px 32px;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tdisplay: inline-block;\r\n\tfont-size: 18px;\r\n\tmargin: 8px 0px;\r\n\tcursor: pointer;\r\n}\r\n\r\n.actionButton.disabled {\r\n\tbackground-color: #1C5F10;\r\n\tcolor: gray;\r\n}\r\n\r\n#infos {\r\n\tpadding-top: 24px;\r\n}\r\n\r\n#infos > .error {\r\n\tcolor: #ff00ff; /* Blender fuchsia */\r\n}\r\n\r\n#infos > .title {\r\n\tfont-weight: bold;\r\n\tfont-size: 24px;\r\n\twidth: 100%;\r\n\tborder-bottom-width: 1px;\r\n\tborder-bottom-style: solid;\r\n\tmargin-bottom: 8px;\r\n}\r\n\r\n#infos > .text {\r\n\tfont-size: 20px;\r\n\ttext-align: justify;\r\n}\r\n\r\n#infos > * {\r\n\tmargin: 0px;\r\n}\r\n\r\n/* See https://stackoverflow.com/a/40100248/38096 */\r\n.overlay {\r\n\tposition:absolute;\r\n\tbackground:#000;\r\n\topacity:.7;\r\n\tleft:0;\r\n\tright:0;\r\n\ttop:0;\r\n\tbottom:0;\r\n\tz-index:1;\r\n\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tjustify-content: flex-start; /* .title below will take care of vertical positioning */\r\n\talign-items: center;\r\n\tfont-family: Sans-Serif;\r\n\tcolor: beige;\r\n}\r\n\r\n/* TODO The star should not be needed */\r\n.overlay > * > .title {\r\n\tfont-weight: bold;\r\n\tfont-size: 42px;\r\n\tborder-bottom-width: 1px;\r\n\tborder-bottom-style: solid;\r\n\twidth:100%;\r\n\tmargin-top:20%;\r\n\tmargin-bottom: 16px;\r\n}\r\n\r\n.overlay > * > .text {\r\n\tfont-size: 32px;\r\n}\r\n", ""]);
+exports.push([module.i, "/* Styles go here. */\r\n\r\nhtml, body {\r\n\tmargin: 0;\r\n\tpadding: 0;\r\n\theight: 100%;\r\n}\r\n\r\n/* body is a flexbox container with an horizontal distribution */\r\nbody {\r\n\tdisplay: flex;\r\n\tflex-direction: row;\r\n\tflex-wrap: nowrap;\r\n\tjustify-content: flex-start;\r\n\talign-items: stretch;\r\n\tbackground-color: black;\r\n}\r\n\r\n/** TODO Consider using a flexbox container */\r\n#ui {\r\n\twidth: 300px;\r\n\tpadding: 12px;\r\n\tcolor: white;\r\n\tfont-family: Sans-Serif;\r\n\tfont-size: 24px;\r\n\tborder-style: solid;\r\n\tborder-radius: 5px;\r\n\talign-self: center; /* \"flex-start\" to stick to top, stretch\" to take all vert. space */\r\n\theight: 91%; /* 80% was nice before research buttons */\r\n}\r\n\r\n#map {\r\n\talign-self: flex-end;\r\n}\r\n\r\n#counters {\r\n\tcolor:white;\r\n}\r\n\r\n.posValue {\r\n\tcolor: green;\r\n}\r\n\r\n.negValue {\r\n\tcolor: firebrick;\r\n}\r\n\r\n/* A flexbox container with vertical distribution */\r\n#actionButtonsContainer {\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tjustify-content: flex-start;\r\n}\r\n\r\n.counterLabel {\r\n\t/* Required for width to have an effect (https://stackoverflow.com/a/257524/38096) */\r\n\tfloat: left;\r\n\twidth: 4em;\r\n}\r\n\r\n.actionButton {\r\n\tbackground-color: #4CAF50;\r\n\tborder: none;\r\n\tcolor: white;\r\n\tpadding: 12px 32px;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tdisplay: inline-block;\r\n\tfont-size: 18px;\r\n\tmargin: 8px 0px;\r\n\tcursor: pointer;\r\n}\r\n\r\n.actionButton.disabled {\r\n\tbackground-color: #1C5F10;\r\n\tcolor: gray;\r\n}\r\n\r\n#infos {\r\n\tpadding-top: 24px;\r\n}\r\n\r\n#infos > .error {\r\n\tcolor: #ff00ff; /* Blender fuchsia */\r\n}\r\n\r\n#infos > .title {\r\n\tfont-weight: bold;\r\n\tfont-size: 24px;\r\n\twidth: 100%;\r\n\tborder-bottom-width: 1px;\r\n\tborder-bottom-style: solid;\r\n\tmargin-bottom: 8px;\r\n}\r\n\r\n#infos > .text {\r\n\tfont-size: 20px;\r\n\ttext-align: justify;\r\n}\r\n\r\n#infos > * {\r\n\tmargin: 0px;\r\n}\r\n\r\n/* See https://stackoverflow.com/a/40100248/38096 */\r\n.overlay {\r\n\tposition:absolute;\r\n\tbackground:#000;\r\n\topacity:.7;\r\n\tleft:0;\r\n\tright:0;\r\n\ttop:0;\r\n\tbottom:0;\r\n\tz-index:1;\r\n\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tjustify-content: flex-start; /* .title below will take care of vertical positioning */\r\n\talign-items: center;\r\n\tfont-family: Sans-Serif;\r\n\tcolor: beige;\r\n}\r\n\r\n/* TODO The star should not be needed */\r\n.overlay > * > .title {\r\n\tfont-weight: bold;\r\n\tfont-size: 42px;\r\n\tborder-bottom-width: 1px;\r\n\tborder-bottom-style: solid;\r\n\twidth:100%;\r\n\tmargin-top:20%;\r\n\tmargin-bottom: 16px;\r\n}\r\n\r\n.overlay > * > .text {\r\n\tfont-size: 32px;\r\n}\r\n", ""]);
 
 // exports
 
@@ -45455,6 +45524,73 @@ exports.Drone = Drone;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+class Research {
+    static getShortDescription(type) {
+        switch (type) {
+            case ResearchType.Accumulator: return 'Improve Accumulators';
+            case ResearchType.SolarPanel: return 'Improve Solar Panels';
+            case ResearchType.WindTurbine: return 'Improve Wind Turbines';
+            default:
+                throw new Error('Missing switch case');
+        }
+    }
+    /** Return a research cost in credits */
+    static getCost(type) {
+        switch (type) {
+            case ResearchType.Accumulator: return Research.ACCUMULATOR_COST;
+            case ResearchType.SolarPanel: return Research.SOLARPANEL_COST;
+            case ResearchType.WindTurbine: return Research.WINDMILL_COST;
+            default:
+                throw new Error('Missing switch case');
+        }
+    }
+    static getDescription(type) {
+        switch (type) {
+            case ResearchType.Accumulator:
+                return `
+                <p class='title'>Improve Accumulators</p>
+                <p class='text'>Research this to double the capacity of your accumulators.<p>
+                <p class='text'>Can be searched once.</p>
+                <br/>
+                <p class='text'>Cost: ${Research.ACCUMULATOR_COST} credits</p>`;
+            case ResearchType.SolarPanel:
+                return `
+                <p class='title'>Improve Solar Panels</p>
+                <p class='text'>Research this to double the production of your solar panels.<p>
+                <p class='text'>Can be searched once.</p>
+                <br/>
+                <p class='text'>Cost: ${Research.SOLARPANEL_COST} credits</p>`;
+            case ResearchType.WindTurbine:
+                return `
+                <p class='title'>Improve Wind Turbines</p>
+                <p class='text'>Research this to double the production of your wind turbines.<p>
+                <p class='text'>Can be searched once.</p>
+                <br/>
+                <p class='text'>Cost: ${Research.WINDMILL_COST} credits</p>`;
+            default:
+                throw new Error('Missing switch case');
+        }
+    }
+}
+Research.ACCUMULATOR_COST = 750;
+Research.SOLARPANEL_COST = 1000;
+Research.WINDMILL_COST = 1500;
+exports.Research = Research;
+var ResearchType;
+(function (ResearchType) {
+    ResearchType[ResearchType["Accumulator"] = 0] = "Accumulator";
+    ResearchType[ResearchType["SolarPanel"] = 1] = "SolarPanel";
+    ResearchType[ResearchType["WindTurbine"] = 2] = "WindTurbine";
+})(ResearchType = exports.ResearchType || (exports.ResearchType = {}));
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 const THREE = __webpack_require__(0);
 const maprenderer_1 = __webpack_require__(3);
 class DroneRenderer {
@@ -45506,7 +45642,7 @@ exports.DroneRenderer = DroneRenderer;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45532,7 +45668,7 @@ exports.BoundElement = BoundElement;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
