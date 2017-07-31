@@ -44393,10 +44393,10 @@ class Building {
 Building.improvedAccumulators = false;
 Building.improvedSolarPanels = false;
 Building.improvedWindTurbines = false;
-Building.ACCUMULATOR_CAPACITY = 100;
+Building.ACCUMULATOR_CAPACITY = 500;
 Building.ACCUMULATOR_COST = 75;
-Building.SOLARPANEL_PRODUCTION_MAX = 10;
-Building.SOLARPANEL_COST = 10;
+Building.SOLARPANEL_PRODUCTION_MAX = 70;
+Building.SOLARPANEL_COST = 50;
 Building.WINDMILL_PRODUCTION_MAX = 100;
 Building.WINDMILL_COST = 150;
 Building.GEOTHERMAL_PRODUCTION = 1000;
@@ -44546,9 +44546,7 @@ const WINNING_DAY = 5; // Number of days before winning
 const GAME_HOURS_PER_PLAYER_MINUTE = 12;
 // TODO Clean this up; no global code
 // Build the world map
-const width = 16;
-const height = 16;
-let map = new worldmap_1.WorldMap(32, 32, 5, 16, 8, 3);
+let map = new worldmap_1.WorldMap(24, 36, 5, 16, 8, 3);
 // Set up the drone
 let drone = new drone_1.Drone(Math.floor(map.width / 2), Math.floor(map.height / 2));
 // create the scene
@@ -44593,7 +44591,8 @@ droneRenderer.mesh.castShadow = true;
 scene.add(droneRenderer.root);
 camera.position.x = 0;
 camera.position.y = 0;
-camera.position.z = 150;
+camera.position.z = 160;
+camera.up = new THREE.Vector3(0, 0, 1);
 camera.lookAt(scene.position);
 // Expose useful objects to the console (debugging/setup purpose)
 window['map'] = map;
@@ -44724,7 +44723,6 @@ function mainLoop() {
     let dt = clock.getDelta();
     updateSimulationAndScene(dt);
     render();
-    // TWEEN.update()
 }
 let currentCell = null;
 var GameResult;
@@ -44755,7 +44753,7 @@ function updateSimulationAndScene(dt) {
     // React to simulation outcome
     if (outcome === GameResult.GameOver) {
         let title = 'Game Over';
-        let text = 'You could not provide power to your city long enough.<br>Reload and improve!';
+        let text = 'You could not provide power to your city long enough.<br>Reload and improve your strategy!';
         let color = 'orangered';
         showPopup(title, text, color);
     }
@@ -44928,7 +44926,7 @@ exports = module.exports = __webpack_require__(8)(undefined);
 
 
 // module
-exports.push([module.i, "/* Styles go here. */\r\n\r\nhtml, body {\r\n\tmargin: 0;\r\n\tpadding: 0;\r\n\theight: 100%;\r\n}\r\n\r\n/* body is a flexbox container with an horizontal distribution */\r\nbody {\r\n\tdisplay: flex;\r\n\tflex-direction: row;\r\n\tflex-wrap: nowrap;\r\n\tjustify-content: flex-start;\r\n\talign-items: stretch;\r\n\tbackground-color: black;\r\n}\r\n\r\n/** TODO Consider using a flexbox container */\r\n#ui {\r\n\twidth: 300px;\r\n\tpadding: 12px;\r\n\tcolor: white;\r\n\tfont-family: Sans-Serif;\r\n\tfont-size: 24px;\r\n\tborder-style: solid;\r\n\tborder-radius: 5px;\r\n\talign-self: center; /* \"flex-start\" to stick to top, stretch\" to take all vert. space */\r\n\theight: 91%; /* 80% was nice before research buttons */\r\n}\r\n\r\n#map {\r\n\talign-self: flex-end;\r\n}\r\n\r\n#counters {\r\n\tcolor:white;\r\n}\r\n\r\n.posValue {\r\n\tcolor: green;\r\n}\r\n\r\n.negValue {\r\n\tcolor: firebrick;\r\n}\r\n\r\n/* A flexbox container with vertical distribution */\r\n#actionButtonsContainer {\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tjustify-content: flex-start;\r\n}\r\n\r\n.counterLabel {\r\n\t/* Required for width to have an effect (https://stackoverflow.com/a/257524/38096) */\r\n\tfloat: left;\r\n\twidth: 4em;\r\n}\r\n\r\n.actionButton {\r\n\tbackground-color: #4CAF50;\r\n\tborder: none;\r\n\tcolor: white;\r\n\tpadding: 12px 32px;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tdisplay: inline-block;\r\n\tfont-size: 18px;\r\n\tmargin: 8px 0px;\r\n\tcursor: pointer;\r\n}\r\n\r\n.actionButton.disabled {\r\n\tbackground-color: #1C5F10;\r\n\tcolor: gray;\r\n}\r\n\r\n#infos {\r\n\tpadding-top: 24px;\r\n}\r\n\r\n#infos > .error {\r\n\tcolor: #ff00ff; /* Blender fuchsia */\r\n}\r\n\r\n#infos > .title {\r\n\tfont-weight: bold;\r\n\tfont-size: 24px;\r\n\twidth: 100%;\r\n\tborder-bottom-width: 1px;\r\n\tborder-bottom-style: solid;\r\n\tmargin-bottom: 8px;\r\n}\r\n\r\n#infos > .text {\r\n\tfont-size: 20px;\r\n\ttext-align: justify;\r\n}\r\n\r\n#infos > * {\r\n\tmargin: 0px;\r\n}\r\n\r\n/* See https://stackoverflow.com/a/40100248/38096 */\r\n.overlay {\r\n\tposition:absolute;\r\n\tbackground:#000;\r\n\topacity:.7;\r\n\tleft:0;\r\n\tright:0;\r\n\ttop:0;\r\n\tbottom:0;\r\n\tz-index:1;\r\n\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tjustify-content: flex-start; /* .title below will take care of vertical positioning */\r\n\talign-items: center;\r\n\tfont-family: Sans-Serif;\r\n\tcolor: beige;\r\n}\r\n\r\n/* TODO The star should not be needed */\r\n.overlay > * > .title {\r\n\tfont-weight: bold;\r\n\tfont-size: 42px;\r\n\tborder-bottom-width: 1px;\r\n\tborder-bottom-style: solid;\r\n\twidth:100%;\r\n\tmargin-top:20%;\r\n\tmargin-bottom: 16px;\r\n}\r\n\r\n.overlay > * > .text {\r\n\tfont-size: 32px;\r\n}\r\n", ""]);
+exports.push([module.i, "/* Styles go here. */\r\n\r\nhtml, body {\r\n\tmargin: 0;\r\n\tpadding: 0;\r\n\theight: 100%;\r\n}\r\n\r\n/* body is a flexbox container with an horizontal distribution */\r\nbody {\r\n\tdisplay: flex;\r\n\tflex-direction: row;\r\n\tflex-wrap: nowrap;\r\n\tjustify-content: flex-start;\r\n\talign-items: stretch;\r\n\tbackground-color: black;\r\n}\r\n\r\n/** TODO Consider using a flexbox container */\r\n#ui {\r\n\twidth: 300px;\r\n\tpadding: 12px;\r\n\tcolor: white;\r\n\tfont-family: Sans-Serif;\r\n\tfont-size: 24px;\r\n\tborder-style: solid;\r\n\tborder-radius: 5px;\r\n\talign-self: center; /* \"flex-start\" to stick to top, stretch\" to take all vert. space */\r\n\theight: 91%; /* 80% was nice before research buttons */\r\n}\r\n\r\n#map {\r\n\talign-self: flex-end;\r\n}\r\n\r\n#counters {\r\n\tcolor:white;\r\n}\r\n\r\n.posValue {\r\n\tcolor: green;\r\n}\r\n\r\n.negValue {\r\n\tcolor: firebrick;\r\n}\r\n\r\n/* A flexbox container with vertical distribution */\r\n#actionButtonsContainer {\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tjustify-content: flex-start;\r\n}\r\n\r\n.counterLabel {\r\n\t/* Required for width to have an effect (https://stackoverflow.com/a/257524/38096) */\r\n\tfloat: left;\r\n\twidth: 4em;\r\n}\r\n\r\n.actionButton {\r\n\tbackground-color: #4CAF50;\r\n\tborder: none;\r\n\tcolor: white;\r\n\tpadding: 12px 32px;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tdisplay: inline-block;\r\n\tfont-size: 18px;\r\n\tmargin: 8px 0px;\r\n\tcursor: pointer;\r\n}\r\n\r\n.actionButton.disabled {\r\n\tbackground-color: #1C5F10;\r\n\tcolor: gray;\r\n}\r\n\r\n#infos {\r\n\tpadding-top: 24px;\r\n}\r\n\r\n#infos > .error {\r\n\tcolor: #ff00ff; /* Blender fuchsia */\r\n}\r\n\r\n#infos > .title {\r\n\tfont-weight: bold;\r\n\tfont-size: 24px;\r\n\twidth: 100%;\r\n\tborder-bottom-width: 1px;\r\n\tborder-bottom-style: solid;\r\n\tmargin-bottom: 8px;\r\n}\r\n\r\n#infos > .text {\r\n\tfont-size: 20px;\r\n\ttext-align: justify;\r\n}\r\n\r\n#infos > * {\r\n\tmargin: 0px;\r\n}\r\n\r\n/* See https://stackoverflow.com/a/40100248/38096 */\r\n.overlay {\r\n\tposition:absolute;\r\n\tbackground:#000;\r\n\topacity:.8;\r\n\tleft:0;\r\n\tright:0;\r\n\ttop:0;\r\n\tbottom:0;\r\n\tz-index:1;\r\n\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tjustify-content: flex-start; /* .title below will take care of vertical positioning */\r\n\talign-items: center;\r\n\tfont-family: Sans-Serif;\r\n\tcolor: white;\r\n}\r\n\r\n/* TODO The star should not be needed */\r\n.overlay > * > .title {\r\n\tfont-weight: bold;\r\n\tfont-size: 42px;\r\n\tborder-bottom-width: 1px;\r\n\tborder-bottom-style: solid;\r\n\twidth:100%;\r\n\tmargin-top:20%;\r\n\tmargin-bottom: 16px;\r\n}\r\n\r\n.overlay > * > .text {\r\n\tfont-size: 32px;\r\n}\r\n", ""]);
 
 // exports
 
