@@ -2,7 +2,7 @@
 23h00 Setup
 
 30/07/2017
- 8h30 Travail sur règles
+ 8h30 Design règles
  9h30 Pause / courses
 10h45 Setup git / projet
 11h30 Début codage structure de donnée carte
@@ -25,3 +25,7 @@
 09h45 Commit description bâtiments
 10h30 Commit enable/disable boutons suivant zone
 11h20 Commit construction bâtiments (sim et scène) ; pause
+11h45 Reprise travail sur simulation compteurs
+13h30 Pause repas
+14h05 Reprise travail sur simulation compteurs
+15h30 Commit implémentation simulation énergie et temps ; pause

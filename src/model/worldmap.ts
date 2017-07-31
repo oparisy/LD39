@@ -3,6 +3,7 @@ import { Building, BuildingType } from './building'
 export class WorldMap {
     private grid: MapCell[]
     private numCells: number;
+    public buildings: Building[] = []
 
     constructor(public width: number, public height: number, fumaroles, rocks, treeSeed, waterSeed) {
         this.numCells = this.width * this.height
@@ -53,6 +54,12 @@ export class WorldMap {
         return this.grid[x + y * this.width]
     }
 
+    public buildBuilding(type: BuildingType, where: MapCell) {
+        let building = new Building(type, where)
+        where.setBuilding(building)
+        this.buildings.push(building)
+    }
+
     private getRandomCell(): MapCell {
         return this.grid[Math.floor(Math.random() * this.numCells)]
     }
@@ -62,17 +69,20 @@ export class MapCell {
     public type: CellType
     public explored: boolean = false
     private building: Building = null
+    public windEfficiency: number // A number between 0.5 and 1
 
     constructor(initialType: CellType, public x, public y) {
         this.type = initialType
+        this.windEfficiency = 1 - 0.5 * Math.random()
     }
 
     public isBuilt(): boolean {
         return this.building !== null
     }
 
-    public buildBuilding(type: BuildingType) {
-        this.building = new Building(type, this)
+    /** Dot not call directy; use WorldMap#buildBuilding */
+    setBuilding(building: Building) {
+        this.building = building
     }
 
     /** Return the cell type as an ASCII character. Debugging purpose */

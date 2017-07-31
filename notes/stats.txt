@@ -61,6 +61,6 @@ Conditions de victoire / défaite
     Si on a tenu un certain temps, on gagne le niveau
 
 Misc
-    Une minute de jeu => 4h (un cycle jour/nuit en 6mn)
-    La nuit dure 2mn (8h)
+    Une minute de jeu => 8h (un cycle jour/nuit en 3mn)
+    La nuit dure 1mn (8h), de 22h à 6h
     Les recherches prennent 1mn et augmentent la consommation de 200kWh

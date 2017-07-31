@@ -8,8 +8,15 @@
 
 <body>
     <div id='ui'>
-        <div><span class='counterLabel'>Credits </span><span id='credits'>0</span></div>
-        <div><span class='counterLabel'>Power </span><span id='power'>0</span> / <span id='maxpower'>0</span> (<span id='incpower'>+0</span>            <span id='decpower'>-0</span>)</div>
+        <div id='counters'>
+            <div><span class='counterLabel'>Power </span><span class='posValue'>+<span id='incpower'>0</span></span>
+                <span class='negValue'>-<span id='decpower'>0</span></span>
+            </div>
+            <div><span class='counterLabel'>Storage </span><span id='power'>0</span> / <span id='maxpower'>0</span></div>
+            <div><span class='counterLabel'>Credits </span><span id='credits'>0</span></div>
+            <div><span class='counterLabel'>Time </span><span id='timeOfDay'>0</span></div>
+            <div><span class='counterLabel'>Day </span><span id='day'>0</span> of <span id='winningDay'>0</span></div>
+        </div>
         <br>
         <div id='actionButtonsContainer'>
             <button class='actionButton' id='buildAccumulator'>Build Accumulator</button>

@@ -26,19 +26,23 @@ body {
 	border-style: solid;
 	border-radius: 5px;
 	align-self: flex-start; /* "strech" to take all vert. space */
-	height: 75%;
+	height: 80%;
 }
 
 #map {
 	align-self: flex-end;
 }
 
-#incpower {
+#counters {
+	color:white;
+}
+
+.posValue {
 	color: green;
 }
 
-#decpower {
-	color: darkred;
+.negValue {
+	color: firebrick;
 }
 
 /* A flexbox container with vertical distribution */

@@ -15,25 +15,29 @@
 Lundi (essentiels) :
  * [Fait] Zone textuelle pour expliquer fonction éléments en hover (boutons)
  * [Fait] Construction de bâtiments (tous disponibles dans un premier temps)
- * Mises à jour compteurs (simulation gains / coûts)
+ * [Fait] Mises à jour compteurs (simulation gains / coûts)
+ * [Fait] Cycle jour / nuit (pour panneaux solaires)
+ * Titre page... Nom du jeu ?
  * Avant 16h: vérifier qu'on sait faire un build ; le publier
  * Avant 16h : créer entrée jeu sur site Jam
- * Titre page...
+ * Finir d'implémenter dépenses et constantes encore à zéro
+ * Feedback gagné / perdu
  * Recherche => restrictions constructions, simulation de son évolution
- * Cycle jour / nuit (pour panneaux solaires)
 
 Ensuite :
- * Vérifier qu'on sait charger un modèle glTF (arbre ou rocher lowpoly)
  * Améliorer caméra
+ * Accueil / flot de pages
+ * polish gameplay
  * Améliorer génération arbres et eau via automates
  * Zone textuelle pour expliquer fonction éléments en hover (canvas, compteurs)
- * Debugger ombre drone
- * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué, améliore reveal ; impact du + 0.5?)
- * modèles bâtiments / véhicules
- * animations
- * polish gameplay
+ * Vérifier qu'on sait charger un modèle glTF (arbre ou rocher lowpoly)
+ * modèles bâtiments
+ * Modèle drone
+ * Debugger ombre drone, en ajouter aux autres éléments
  * polish rendu / shaders
  * assets "décoratifs" hors gameplay (arbres, etc.)
- * Accueil / flot de pages
  * Shader eau
+ * animations
  * Intensité mouvements arbres => indice de l'intensité du vent
+ * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué, améliore reveal ; impact du + 0.5?)
+ * Durée des constructions

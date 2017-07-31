@@ -6,7 +6,24 @@ Il faudra régler ça au calme (en simulant accès "externe" via tethering 4G pa
 Test de github.com/pinqy520/three-typescript-starter (en espérant qu'il s'agit bien du starter que j'avais identifié)
 => oui, c'est bien ça
 
-TODO voir avec Emilie ce que j'y avais changé...
+Conseils Ben :
+ * Il faut une seconde ressource (crédits / whatever) en plus de l'énergie pour rendre le gameplay intéressant
+ * On ne doit pas pouvoir convertir d'une ressource à l'autre (vendre de l'énergie par exemple)
+ * Ajouter une possibilité de stocker l'énergie varierait les stratégies
+ * Dépenser les crédits pour construire structures
+ * La pression de la ville (sous forme d'objectifs mensuels ou de pression continue) est bien
+ * Eléments essentiels, à implémenter en priorité :
+   * scouting
+   * carte générée procéduralement (obligera le joueur à adapter ses stratégies à la carte)
+   * pose de bâtiments (pas besoin de les connecter)
+   * bâtiment de recherche
+     => en particulier pour débloquer les types de ressources extractibles ;
+        on pourrait n'avoir que le fossile initialement
+  * Eléments pas indispensables pour core gameplay / jeu intéressant :
+   * events
+   * pylônes
+   * gestion des collisions
+  * Temps réel ou tour par tour : à choisir suivant facilité de codage, pas de gros impact sur gameplay
 
 31/07/2017
 Setup projet git dès le début pour gagner du temps
@@ -53,6 +70,7 @@ Bilan première journée :
  * CSS / HTML : pas suffisament rodé, préparer snippets à l'avance et limiter besoins durant LD
  * jeu plus avancé qu'habituellement à ce stade
 
+
 Seconde journée
 
 Travail UI facilité par HTML/CSS maintenant que le gros de l'interface est calé
@@ -60,3 +78,7 @@ Travail UI facilité par HTML/CSS maintenant que le gros de l'interface est cal�
 J'anticipe des difficultés dans le positionnement des bâtiments si je déforme la géométrie du plan
 pour créer des reliefs. On est trop dépendants de sa structure
 => il aurait fallu créer et maintenir la géométrie nous-mêmes dès le début
+
+Le mécanisme de BrowserSync est vraiment pratique, jamais besoin de relancer de build à la main
+
+Du temps passé sur l'implémentation des règles, mais gratifiant et je ne vois pas comment raccourcir
