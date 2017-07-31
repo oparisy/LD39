@@ -90,3 +90,9 @@ Je ne perd pas de temps sur la "minification" ; mon starter ne la propose pas
 
 Publication GitHub : Settings > GitHub Pages > Source: /docs
 Configuration webpack ajustée en circonstance
+Petite frayeur à la publication : il faut attendre quelques minutes pour que GitHub prenne en compte le commit
+
+Création page du jeu sur ldjam.com : il faut créer un nouveau compte, homonyme (rumeurs de portage des jeux)
+
+Pour le dialogue utilisateur, finalement : un overlay HTML.
+Permet de garder le jeu inactif en transparence et de contrôler facilement le layout.

@@ -59,14 +59,14 @@ body {
 }
 
 .actionButton {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 12px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 18px;
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	padding: 12px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 18px;
 	margin: 8px 0px;
 	cursor: pointer;
 }
@@ -100,4 +100,38 @@ body {
 
 #infos > * {
 	margin: 0px;
+}
+
+/* See https://stackoverflow.com/a/40100248/38096 */
+.overlay {
+	position:absolute;
+	background:#000;
+	opacity:.7;
+	left:0;
+	right:0;
+	top:0;
+	bottom:0;
+	z-index:1;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start; /* .title below will take care of vertical positioning */
+	align-items: center;
+	font-family: Sans-Serif;
+	color: beige;
+}
+
+/* TODO The star should not be needed */
+.overlay > * > .title {
+	font-weight: bold;
+	font-size: 42px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	width:100%;
+	margin-top:20%;
+	margin-bottom: 16px;
+}
+
+.overlay > * > .text {
+	font-size: 32px;
 }

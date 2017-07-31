@@ -12,6 +12,7 @@ import { MapRenderer } from './render/maprenderer'
 import { DroneRenderer } from './render/dronerenderer'
 
 import { BoundElement } from './ui/boundelement'
+import { Overlay } from './ui/overlay'
 
 let CITY_CONSUMPTION = 0 // kW
 let ENERGY_PRICE = 5 // creds/kWh
@@ -114,7 +115,7 @@ let maxPower = new BoundElement(document.getElementById('maxpower'), 0)
 let incPower = new BoundElement(document.getElementById('incpower'), 0)
 let decPower = new BoundElement(document.getElementById('decpower'), 0)
 let gameTime = new BoundElement(document.getElementById('timeOfDay'), START_HOUR, timeConverter) // The current game time, in hours
-let elapsed = new BoundElement(document.getElementById('day'), 0, dayConverter) // Total elapsed game time, in hours
+let elapsed = new BoundElement(document.getElementById('day'), START_HOUR, dayConverter) // Total elapsed game time, in hours
 let winningDay = new BoundElement(document.getElementById('winningDay'), WINNING_DAY)
 
 function timeConverter(time: number) {
@@ -174,7 +175,18 @@ function mainLoop(): void {
 
 let currentCell: MapCell = null
 
+enum GameResult {
+	GoingOn, GameOver, Won
+}
+
+let outcome = GameResult.GoingOn
+
 function updateSimulationAndScene(dt: number) {
+
+	// Stop any simulation if the game is over or won
+	if (outcome !== GameResult.GoingOn) {
+		return
+	}
 
 	// Update the drone
 	drone.updatePosition(dt)
@@ -187,7 +199,34 @@ function updateSimulationAndScene(dt: number) {
 		onEnterCell(flownOver);
 	}
 
-	let outcome = updateCounters(dt)
+	// Perform power and cost simulation
+	outcome = updateCounters(dt)
+
+	// React to simulation outcome
+	if (outcome === GameResult.GameOver) {
+		let title = 'Game Over'
+		let text = 'You could not provide power to your city long enough.<br>Reload and improve!'
+		let color = 'orangered'
+		showPopup(title, text, color)
+	}
+
+	if (outcome === GameResult.Won) {
+		let title = 'Game Won'
+		let text = 'You have succeded in providing power to your city during the agreed period of time.<br>Reload to play again!'
+		let color = 'mediumseagreen'
+		showPopup(title, text, color)
+	}
+}
+
+function showPopup(title, text, color): Overlay {
+	let overlay = new Overlay()
+	let contents = `
+		<div>
+		<div class='title'>${title}</div>
+		<div class='text'>${text}</div>
+		</div>`
+	overlay.show(contents, color)
+	return overlay
 }
 
 function onEnterCell(cell: MapCell) {
@@ -218,10 +257,6 @@ function setButtonState(button: Element, enabled: boolean) {
 		// Priorizing simplicity here... See https://stackoverflow.com/a/196038/38096
 		button.classList.remove('disabled')
 	}
-}
-
-enum GameResult {
-	GoingOn, GameOver, Won
 }
 
 /** Update game counter and their UI.

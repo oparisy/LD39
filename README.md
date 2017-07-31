@@ -1,8 +1,8 @@
 # Power Tycoon
 
-My Ludum Dare 39 Jam entry, "Power Tycoon" ([entry page](http://ludumdare.com/compo/ludum-dare-35/?action=preview&uid=50996)).
+My Ludum Dare 39 2-days Jam entry, "Power Tycoon" ([entry page](https://ldjam.com/events/ludum-dare/39/$45406)).
 
-Theme: "Running out of time".
+Theme: "Running out of Power".
 
 The submitted version is published at [oparisy.github.io/LD39](http://oparisy.github.io/LD39/).
 

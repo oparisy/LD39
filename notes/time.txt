@@ -30,3 +30,6 @@
 14h05 Reprise travail sur simulation compteurs
 15h30 Commit implémentation simulation énergie et temps ; pause
 15h50 Reprise travail sur publication jeu
+16h30 Packaging OK, première publication GitHub faite
+17h55 Entrée pour le jeu créée sur ldjam.com ; début travail sur UI popup
+18h40 UI gagné / perdu terminée ; pause

@@ -18,10 +18,10 @@ Lundi (essentiels) :
  * [Fait] Mises à jour compteurs (simulation gains / coûts)
  * [Fait] Cycle jour / nuit (pour panneaux solaires)
  * [Fait] Titre page... Nom du jeu ? => "Power Tycoon"
- * Avant 16h: vérifier qu'on sait faire un build ; le publier
- * Avant 16h : créer entrée jeu sur site Jam
+ * [Fait] Vérifier qu'on sait faire un build ; le publier
+ * [Fait] Créer entrée jeu sur ldjam.com
+ * [Fait] Feedback gagné / perdu
  * Finir d'implémenter dépenses et constantes encore à zéro
- * Feedback gagné / perdu
  * Recherche => restrictions constructions, simulation de son évolution
 
 Ensuite :
@@ -41,4 +41,4 @@ Ensuite :
  * animations
  * Intensité mouvements arbres => indice de l'intensité du vent
  * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué, améliore reveal ; impact du + 0.5?)
- * Packaging "minified"
+ 

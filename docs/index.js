@@ -44526,6 +44526,7 @@ const building_1 = __webpack_require__(2);
 const maprenderer_1 = __webpack_require__(3);
 const dronerenderer_1 = __webpack_require__(12);
 const boundelement_1 = __webpack_require__(13);
+const overlay_1 = __webpack_require__(14);
 let CITY_CONSUMPTION = 0; // kW
 let ENERGY_PRICE = 5; // creds/kWh
 let WINNING_DAY = 6; // Number of days before winning
@@ -44603,7 +44604,7 @@ let maxPower = new boundelement_1.BoundElement(document.getElementById('maxpower
 let incPower = new boundelement_1.BoundElement(document.getElementById('incpower'), 0);
 let decPower = new boundelement_1.BoundElement(document.getElementById('decpower'), 0);
 let gameTime = new boundelement_1.BoundElement(document.getElementById('timeOfDay'), START_HOUR, timeConverter); // The current game time, in hours
-let elapsed = new boundelement_1.BoundElement(document.getElementById('day'), 0, dayConverter); // Total elapsed game time, in hours
+let elapsed = new boundelement_1.BoundElement(document.getElementById('day'), START_HOUR, dayConverter); // Total elapsed game time, in hours
 let winningDay = new boundelement_1.BoundElement(document.getElementById('winningDay'), WINNING_DAY);
 function timeConverter(time) {
     let hour = time < 13 ? Math.floor(time) : Math.floor(time - 12);
@@ -44654,7 +44655,18 @@ function mainLoop() {
     // TWEEN.update()
 }
 let currentCell = null;
+var GameResult;
+(function (GameResult) {
+    GameResult[GameResult["GoingOn"] = 0] = "GoingOn";
+    GameResult[GameResult["GameOver"] = 1] = "GameOver";
+    GameResult[GameResult["Won"] = 2] = "Won";
+})(GameResult || (GameResult = {}));
+let outcome = GameResult.GoingOn;
 function updateSimulationAndScene(dt) {
+    // Stop any simulation if the game is over or won
+    if (outcome !== GameResult.GoingOn) {
+        return;
+    }
     // Update the drone
     drone.updatePosition(dt);
     droneRenderer.updatePosition();
@@ -44664,7 +44676,31 @@ function updateSimulationAndScene(dt) {
         currentCell = flownOver;
         onEnterCell(flownOver);
     }
-    let outcome = updateCounters(dt);
+    // Perform power and cost simulation
+    outcome = updateCounters(dt);
+    // React to simulation outcome
+    if (outcome === GameResult.GameOver) {
+        let title = 'Game Over';
+        let text = 'You could not provide power to your city long enough.<br>Reload and improve!';
+        let color = 'orangered';
+        showPopup(title, text, color);
+    }
+    if (outcome === GameResult.Won) {
+        let title = 'Game Won';
+        let text = 'You have succeded in providing power to your city during the agreed period of time.<br>Reload to play again!';
+        let color = 'mediumseagreen';
+        showPopup(title, text, color);
+    }
+}
+function showPopup(title, text, color) {
+    let overlay = new overlay_1.Overlay();
+    let contents = `
+		<div>
+		<div class='title'>${title}</div>
+		<div class='text'>${text}</div>
+		</div>`;
+    overlay.show(contents, color);
+    return overlay;
 }
 function onEnterCell(cell) {
     // Reveal the cell if new
@@ -44693,12 +44729,6 @@ function setButtonState(button, enabled) {
         button.classList.remove('disabled');
     }
 }
-var GameResult;
-(function (GameResult) {
-    GameResult[GameResult["GoingOn"] = 0] = "GoingOn";
-    GameResult[GameResult["GameOver"] = 1] = "GameOver";
-    GameResult[GameResult["Won"] = 2] = "Won";
-})(GameResult || (GameResult = {}));
 /** Update game counter and their UI.
  * dt is the elapsed player time, in seconds.
  * The simulation outcome is returned */
@@ -44812,7 +44842,7 @@ exports = module.exports = __webpack_require__(8)(undefined);
 
 
 // module
-exports.push([module.i, "/* Styles go here. */\r\n\r\nhtml, body {\r\n\tmargin: 0;\r\n\tpadding: 0;\r\n\theight: 100%;\r\n}\r\n\r\n/* body is a flexbox container with an horizontal distribution */\r\nbody {\r\n\tdisplay: flex;\r\n\tflex-direction: row;\r\n\tflex-wrap: nowrap;\r\n\tjustify-content: flex-start;\r\n\talign-items: stretch;\r\n\tbackground-color: black;\r\n}\r\n\r\n/** TODO Consider using a flexbox container */\r\n#ui {\r\n\twidth: 300px;\r\n\tpadding: 12px;\r\n\tcolor: white;\r\n\tfont-family: Sans-Serif;\r\n\tfont-size: 24px;\r\n\tborder-style: solid;\r\n\tborder-radius: 5px;\r\n\talign-self: flex-start; /* \"strech\" to take all vert. space */\r\n\theight: 80%;\r\n}\r\n\r\n#map {\r\n\talign-self: flex-end;\r\n}\r\n\r\n#counters {\r\n\tcolor:white;\r\n}\r\n\r\n.posValue {\r\n\tcolor: green;\r\n}\r\n\r\n.negValue {\r\n\tcolor: firebrick;\r\n}\r\n\r\n/* A flexbox container with vertical distribution */\r\n#actionButtonsContainer {\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tjustify-content: flex-start;\r\n}\r\n\r\n.counterLabel {\r\n\t/* Required for width to have an effect (https://stackoverflow.com/a/257524/38096) */\r\n\tfloat: left;\r\n\twidth: 4em;\r\n}\r\n\r\n.actionButton {\r\n    background-color: #4CAF50;\r\n    border: none;\r\n    color: white;\r\n    padding: 12px 32px;\r\n    text-align: center;\r\n    text-decoration: none;\r\n    display: inline-block;\r\n    font-size: 18px;\r\n\tmargin: 8px 0px;\r\n\tcursor: pointer;\r\n}\r\n\r\n.actionButton.disabled {\r\n\tbackground-color: #1C5F10;\r\n\tcolor: gray;\r\n}\r\n\r\n#infos {\r\n\tpadding-top: 24px;\r\n}\r\n\r\n#infos > .error {\r\n\tcolor: #ff00ff; /* Blender fuchsia */\r\n}\r\n\r\n#infos > .title {\r\n\tfont-weight: bold;\r\n\tfont-size: 24px;\r\n\twidth: 100%;\r\n\tborder-bottom-width: 1px;\r\n\tborder-bottom-style: solid;\r\n\tmargin-bottom: 8px;\r\n}\r\n\r\n#infos > .text {\r\n\tfont-size: 20px;\r\n\ttext-align: justify;\r\n}\r\n\r\n#infos > * {\r\n\tmargin: 0px;\r\n}", ""]);
+exports.push([module.i, "/* Styles go here. */\r\n\r\nhtml, body {\r\n\tmargin: 0;\r\n\tpadding: 0;\r\n\theight: 100%;\r\n}\r\n\r\n/* body is a flexbox container with an horizontal distribution */\r\nbody {\r\n\tdisplay: flex;\r\n\tflex-direction: row;\r\n\tflex-wrap: nowrap;\r\n\tjustify-content: flex-start;\r\n\talign-items: stretch;\r\n\tbackground-color: black;\r\n}\r\n\r\n/** TODO Consider using a flexbox container */\r\n#ui {\r\n\twidth: 300px;\r\n\tpadding: 12px;\r\n\tcolor: white;\r\n\tfont-family: Sans-Serif;\r\n\tfont-size: 24px;\r\n\tborder-style: solid;\r\n\tborder-radius: 5px;\r\n\talign-self: flex-start; /* \"strech\" to take all vert. space */\r\n\theight: 80%;\r\n}\r\n\r\n#map {\r\n\talign-self: flex-end;\r\n}\r\n\r\n#counters {\r\n\tcolor:white;\r\n}\r\n\r\n.posValue {\r\n\tcolor: green;\r\n}\r\n\r\n.negValue {\r\n\tcolor: firebrick;\r\n}\r\n\r\n/* A flexbox container with vertical distribution */\r\n#actionButtonsContainer {\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tjustify-content: flex-start;\r\n}\r\n\r\n.counterLabel {\r\n\t/* Required for width to have an effect (https://stackoverflow.com/a/257524/38096) */\r\n\tfloat: left;\r\n\twidth: 4em;\r\n}\r\n\r\n.actionButton {\r\n\tbackground-color: #4CAF50;\r\n\tborder: none;\r\n\tcolor: white;\r\n\tpadding: 12px 32px;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tdisplay: inline-block;\r\n\tfont-size: 18px;\r\n\tmargin: 8px 0px;\r\n\tcursor: pointer;\r\n}\r\n\r\n.actionButton.disabled {\r\n\tbackground-color: #1C5F10;\r\n\tcolor: gray;\r\n}\r\n\r\n#infos {\r\n\tpadding-top: 24px;\r\n}\r\n\r\n#infos > .error {\r\n\tcolor: #ff00ff; /* Blender fuchsia */\r\n}\r\n\r\n#infos > .title {\r\n\tfont-weight: bold;\r\n\tfont-size: 24px;\r\n\twidth: 100%;\r\n\tborder-bottom-width: 1px;\r\n\tborder-bottom-style: solid;\r\n\tmargin-bottom: 8px;\r\n}\r\n\r\n#infos > .text {\r\n\tfont-size: 20px;\r\n\ttext-align: justify;\r\n}\r\n\r\n#infos > * {\r\n\tmargin: 0px;\r\n}\r\n\r\n/* See https://stackoverflow.com/a/40100248/38096 */\r\n.overlay {\r\n\tposition:absolute;\r\n\tbackground:#000;\r\n\topacity:.7;\r\n\tleft:0;\r\n\tright:0;\r\n\ttop:0;\r\n\tbottom:0;\r\n\tz-index:1;\r\n\r\n\tdisplay: flex;\r\n\tflex-direction: column;\r\n\tjustify-content: flex-start; /* .title below will take care of vertical positioning */\r\n\talign-items: center;\r\n\tfont-family: Sans-Serif;\r\n\tcolor: beige;\r\n}\r\n\r\n/* TODO The star should not be needed */\r\n.overlay > * > .title {\r\n\tfont-weight: bold;\r\n\tfont-size: 42px;\r\n\tborder-bottom-width: 1px;\r\n\tborder-bottom-style: solid;\r\n\twidth:100%;\r\n\tmargin-top:20%;\r\n\tmargin-bottom: 16px;\r\n}\r\n\r\n.overlay > * > .text {\r\n\tfont-size: 32px;\r\n}\r\n", ""]);
 
 // exports
 
@@ -45482,6 +45512,43 @@ class BoundElement {
     }
 }
 exports.BoundElement = BoundElement;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+class Overlay {
+    constructor() {
+        this.root = undefined;
+    }
+    /** Show an overlay on top of the current document.
+     * Root element is returned for extra customization */
+    show(htmlContents, backgroundColor) {
+        // See https://stackoverflow.com/a/40100248/38096
+        this.root = document.createElement('div');
+        if (htmlContents !== undefined) {
+            this.root.innerHTML = htmlContents;
+        }
+        if (backgroundColor !== undefined) {
+            this.root.style.background = backgroundColor;
+        }
+        this.root.classList.add('overlay');
+        document.body.appendChild(this.root);
+        return this.root;
+    }
+    /** Remove the previously displayed overlay */
+    remove() {
+        if (this.root !== undefined) {
+            document.body.removeChild(this.root);
+            this.root = undefined;
+        }
+    }
+}
+exports.Overlay = Overlay;
 
 
 /***/ })

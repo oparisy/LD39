@@ -19,3 +19,7 @@ Idée trop longues / pas retenues :
     Destruction des bâtiments
 
     Durée des constructions
+
+    Sons / musique
+
+    Packaging "minified"
