@@ -22,7 +22,7 @@ export class Building {
             case BuildingType.Geothermal:
                 return `
                 <p class='title'>Geothermal Plant</p>
-                <p class='text'>An expansive but powerful source of energy. Power output is stable.<p>
+                <p class='text'>An expensive but powerful source of energy. Power output is stable.<p>
                 <p class='text'>Can be built only on a fumarole.</p>`
 
             case BuildingType.Research:

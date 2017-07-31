@@ -64,6 +64,11 @@ export class MapCell {
         this.type = initialType
     }
 
+    public isBuilt(): boolean {
+        // TODO
+        return false;
+    }
+
     /** Return the cell type as an ASCII character. Debugging purpose */
     public textType(): string {
         switch (this.type) {

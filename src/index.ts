@@ -4,7 +4,7 @@ import './style.css'
 import * as THREE from 'three'
 import * as TWEEN from 'tween.js'
 
-import { WorldMap, MapCell } from './model/worldmap'
+import { WorldMap, MapCell, CellType } from './model/worldmap'
 import { Drone } from './model/drone'
 import { Building, BuildingType } from './model/building'
 
@@ -88,11 +88,11 @@ window['scene'] = scene
 window['droneRenderer'] = droneRenderer
 
 // Get UI DOM elements
-let buildAccumulator = document.getElementById('buildAccumulator')
-let buildSolar = document.getElementById('buildSolar')
-let buildWindmill = document.getElementById('buildWindmill')
-let buildGeothermal = document.getElementById('buildGeothermal')
-let buildResearch = document.getElementById('buildResearch')
+let buildAccumulator = <HTMLButtonElement>document.getElementById('buildAccumulator')
+let buildSolar = <HTMLButtonElement>document.getElementById('buildSolar')
+let buildWindmill = <HTMLButtonElement>document.getElementById('buildWindmill')
+let buildGeothermal = <HTMLButtonElement>document.getElementById('buildGeothermal')
+let buildResearch = <HTMLButtonElement>document.getElementById('buildResearch')
 let infos = document.getElementById('infos')
 
 // Enrich button to ease following code
@@ -107,7 +107,7 @@ let buildButtons = [buildAccumulator, buildSolar, buildWindmill, buildGeothermal
 canvas.addEventListener('mousedown', onDocumentMouseDown, false)
 for (let bt of buildButtons) {
 	let type = bt['buildingType']
-	bt.addEventListener('click', function () { buildBuilding(type) })
+	bt.addEventListener('click', function () { if (!bt.classList.contains('disabled')) { buildBuilding(type) } })
 	bt.addEventListener('mouseenter', function () { setDescription(Building.getDescription(type)) })
 	bt.addEventListener('mouseleave', function () { clearDescription() })
 }
@@ -134,19 +134,44 @@ function mainLoop(): void {
 	// TWEEN.update()
 }
 
+let lastFlownOver = null
+
 function updateSimulation(dt: number) {
 	drone.updatePosition(dt)
 
 	// Did the drone fly over an unexplored cell?
 	let flownOver = map.getCell(Math.floor(drone.x), Math.floor(drone.y))
-	if (!flownOver.explored) {
-		reveal(flownOver)
+	if (flownOver != lastFlownOver) {
+		lastFlownOver = flownOver;
+		onEnterCell(flownOver);
 	}
 }
 
-function reveal(cell: MapCell) {
-	cell.explored = true
-	mapRenderer.updateFacesColor()
+function onEnterCell(cell: MapCell) {
+	// Reveal the cell if new
+	if (!cell.explored) {
+		cell.explored = true
+		mapRenderer.updateFacesColor()
+	}
+
+	// Update UI
+	let isEmpty = !cell.isBuilt()
+	setButtonState(buildAccumulator, isEmpty && cell.type === CellType.Ground)
+	setButtonState(buildSolar, isEmpty && cell.type === CellType.Ground)
+	setButtonState(buildWindmill, isEmpty && cell.type === CellType.Ground)
+	setButtonState(buildGeothermal, isEmpty && cell.type === CellType.Fumarole)
+	setButtonState(buildResearch, isEmpty && cell.type === CellType.Ground)
+}
+
+/** Enable of disable button.
+ * We do not use .disabled as we would lose the mouse events used for descriptions */
+function setButtonState(button: Element, enabled: boolean) {
+	if (!enabled) {
+		button.classList.add('disabled')
+	} else {
+		// Priorizing simplicity here... See https://stackoverflow.com/a/196038/38096
+		button.classList.remove('disabled')
+	}
 }
 
 function render(): void {
