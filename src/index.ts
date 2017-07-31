@@ -2,7 +2,6 @@
 import './style.css'
 // three.js
 import * as THREE from 'three'
-import * as TWEEN from 'tween.js'
 
 import { WorldMap, MapCell, CellType } from './model/worldmap'
 import { Drone } from './model/drone'
@@ -32,9 +31,7 @@ const GAME_HOURS_PER_PLAYER_MINUTE = 12
 // TODO Clean this up; no global code
 
 // Build the world map
-const width = 16
-const height = 16
-let map = new WorldMap(32, 32, 5, 16, 8, 3)
+let map = new WorldMap(24, 36, 5, 16, 8, 3)
 
 // Set up the drone
 let drone = new Drone(Math.floor(map.width / 2), Math.floor(map.height / 2))
@@ -95,7 +92,8 @@ scene.add(droneRenderer.root)
 
 camera.position.x = 0
 camera.position.y = 0
-camera.position.z = 150
+camera.position.z = 160
+camera.up = new THREE.Vector3(0, 0, 1)
 
 camera.lookAt(scene.position)
 
@@ -245,7 +243,6 @@ function mainLoop(): void {
 	let dt = clock.getDelta()
 	updateSimulationAndScene(dt)
 	render()
-	// TWEEN.update()
 }
 
 let currentCell: MapCell = null
@@ -283,7 +280,7 @@ function updateSimulationAndScene(dt: number) {
 	// React to simulation outcome
 	if (outcome === GameResult.GameOver) {
 		let title = 'Game Over'
-		let text = 'You could not provide power to your city long enough.<br>Reload and improve!'
+		let text = 'You could not provide power to your city long enough.<br>Reload and improve your strategy!'
 		let color = 'orangered'
 		showPopup(title, text, color)
 	}

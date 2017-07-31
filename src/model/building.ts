@@ -6,10 +6,10 @@ export class Building {
     public static improvedSolarPanels = false
     public static improvedWindTurbines = false
 
-    static readonly ACCUMULATOR_CAPACITY = 100
+    static readonly ACCUMULATOR_CAPACITY = 500
     static readonly ACCUMULATOR_COST = 75
-    static readonly SOLARPANEL_PRODUCTION_MAX = 10
-    static readonly SOLARPANEL_COST = 10
+    static readonly SOLARPANEL_PRODUCTION_MAX = 70
+    static readonly SOLARPANEL_COST = 50
     static readonly WINDMILL_PRODUCTION_MAX = 100
     static readonly WINDMILL_COST = 150
     static readonly GEOTHERMAL_PRODUCTION = 1000

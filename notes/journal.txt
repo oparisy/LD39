@@ -100,3 +100,6 @@ Permet de garder le jeu inactif en transparence et de contrôler facilement le l
 Pas de chance (?), github a des soucis de serveurs (pour la publication des pages en particulier)
 
 Objectifs priorisés atteints avant 22h30 !
+
+Travail sur caméra limité : lookAt donne vite mal au coeur,
+et modifier le point de vue met l'accent sur le manque de relief

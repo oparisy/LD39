@@ -24,10 +24,9 @@ Lundi :
  * [Fait] Finir d'implémenter dépenses et constantes encore à zéro
  * [Fait] Recherche => restrictions constructions, simulation de son évolution
  * [Fait] Polish gameplay
+ * [Fait] Améliorer caméra
 
 Ensuite :
- * Améliorer caméra
- * Améliorer champ de vision drone (3x3)
  * Améliorer génération arbres et eau via automates
  * Vérifier qu'on sait charger un modèle glTF (arbre ou rocher lowpoly)
  * modèles bâtiments
@@ -39,3 +38,4 @@ Ensuite :
  * Accueil / flot de pages
  * Modèle drone
  * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué, améliore reveal ; impact du + 0.5?)
+ * Bug : valeurs pas mises à jour dans tooltips après amélioration par recherche

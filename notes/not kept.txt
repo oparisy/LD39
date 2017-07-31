@@ -31,3 +31,6 @@ Idée trop longues / pas retenues :
     Zone textuelle pour expliquer fonction éléments en hover (canvas, compteurs)
 
     Intensité mouvements arbres => indice de l'intensité du vent
+
+    Améliorer champ de vision drone (3x3)
+    => fausse bonne idée ; trop efficace!

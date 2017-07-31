@@ -106,7 +106,7 @@ body {
 .overlay {
 	position:absolute;
 	background:#000;
-	opacity:.7;
+	opacity:.8;
 	left:0;
 	right:0;
 	top:0;
@@ -118,7 +118,7 @@ body {
 	justify-content: flex-start; /* .title below will take care of vertical positioning */
 	align-items: center;
 	font-family: Sans-Serif;
-	color: beige;
+	color: white;
 }
 
 /* TODO The star should not be needed */
