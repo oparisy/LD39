@@ -1,6 +1,6 @@
 # Power Tycoon
 
-My Ludum Dare 39 (2-days) Jam entry, "Power Tycoon" ([entry page](https://ldjam.com/events/ludum-dare/39/$45406)).
+My Ludum Dare 39 (2-days) Jam entry, "Power Tycoon" ([entry page](https://ldjam.com/events/ludum-dare/39/power-tycoon)).
 
 Theme: "Running out of Power".
 
