@@ -112,3 +112,10 @@ Parenting blender ne semble pas avoir de conséquence une fois le modèle charg�
 
 Pas mal de travail avec les loaders webpack et three pour charger convenablement le modèle
 Animation pales NOK ; il faut que je me fasse un snippet de rotation autour d'un axe arbitraire, propre au modèle
+
+Bug dans la version finale commitée ! La version packagée ne permet pas de charger l'obj
+=> les modes dev et packagés n'ont pas le même comportement !
+Je reproduis localement en installant python 3, puis avec un "python -m http.server" et en accédant à http://localhost:8000/
+
+Ajout workaround bug ; je publie sans le screenshot d'éolienne
+Probablement un souci de fond avec require() ; à faire marcher sans hack avant toute chose

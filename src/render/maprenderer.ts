@@ -20,7 +20,9 @@ export class MapRenderer {
 
         // Load the wind turbine OBJ model
         var loader = new THREE.OBJLoader()
-        loader.load(require('file-loader!../assets/windTurbine.obj'), (group) => this.onWindTurbineLoaded(group))
+        var fileContent = require('raw-loader!../assets/windTurbine.obj')
+        console.log('File content', fileContent)
+        loader.load(require('raw-loader!../assets/windTurbine.obj'), (group) => this.onWindTurbineLoaded(group))
 
         // Build a plane with the proper number of subdivisions
         this.geom = new THREE.PlaneGeometry(map.width * MapRenderer.side, map.height * MapRenderer.side, map.width, map.height)
@@ -100,8 +102,7 @@ export class MapRenderer {
         position.multiplyScalar(1 / vset.size)
 
         // Add building here
-        if (cell.getBuildingType() === BuildingType.WindTurbine) {
-            // Maybe a race condition here, but the model should be loaded now
+        if (cell.getBuildingType() === BuildingType.WindTurbine && this.windTurbineModel !== undefined) {
             let model = this.windTurbineModel.clone()
             model.position.set(position.x, position.y, 0)
             this.mesh.add(model)

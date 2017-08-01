@@ -41,3 +41,4 @@
 23h50 Commit playtesting, test upgrade visibilité drone => trop, calage caméra
 00h00 Début travail sur OBJ (!)
 03h30 Commit final : chargement et insertion modèle OBJ éolienne
+04h15 Publication sur ldjam.com, avec workaround car chargement modèle NOK

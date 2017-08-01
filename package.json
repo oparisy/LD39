@@ -32,8 +32,9 @@
     "typescript": "latest",
     "webpack": "latest",
     "webpack-dev-server": "latest",
-    "file-loader": "latest",
-    "clean-webpack-plugin": "latest"
+    "raw-loader": "latest",
+    "clean-webpack-plugin": "latest",
+    "file-loader": "latest"
   },
   "dependencies": {
     "@types/three": "latest",

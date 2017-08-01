@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -44434,7 +44434,9 @@ class MapRenderer {
         this.propellers = [];
         // Load the wind turbine OBJ model
         var loader = new THREE.OBJLoader();
-        loader.load(__webpack_require__(14), (group) => this.onWindTurbineLoaded(group));
+        var fileContent = __webpack_require__(4);
+        console.log('File content', fileContent);
+        loader.load(__webpack_require__(4), (group) => this.onWindTurbineLoaded(group));
         // Build a plane with the proper number of subdivisions
         this.geom = new THREE.PlaneGeometry(map.width * MapRenderer.side, map.height * MapRenderer.side, map.width, map.height);
         // Model -> view reference (for easier updates)
@@ -44501,8 +44503,7 @@ class MapRenderer {
         }
         position.multiplyScalar(1 / vset.size);
         // Add building here
-        if (cell.getBuildingType() === building_1.BuildingType.WindTurbine) {
-            // Maybe a race condition here, but the model should be loaded now
+        if (cell.getBuildingType() === building_1.BuildingType.WindTurbine && this.windTurbineModel !== undefined) {
             let model = this.windTurbineModel.clone();
             model.position.set(position.x, position.y, 0);
             this.mesh.add(model);
@@ -44542,27 +44543,33 @@ exports.MapRenderer = MapRenderer;
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__(5);
-
+module.exports = "module.exports = __webpack_public_path__ + \"415c08fb1ba0c3f77587688b3dd0cbf6.obj\";"
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(6);
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 // add styles
-__webpack_require__(6);
+__webpack_require__(7);
 // three.js
 const THREE = __webpack_require__(0);
-__webpack_require__(11)(THREE);
+__webpack_require__(12)(THREE);
 const worldmap_1 = __webpack_require__(2);
-const drone_1 = __webpack_require__(12);
+const drone_1 = __webpack_require__(13);
 const building_1 = __webpack_require__(1);
-const research_1 = __webpack_require__(13);
+const research_1 = __webpack_require__(14);
 const maprenderer_1 = __webpack_require__(3);
 const dronerenderer_1 = __webpack_require__(15);
 const boundelement_1 = __webpack_require__(16);
@@ -44922,13 +44929,13 @@ mainLoop();
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(7);
+var content = __webpack_require__(8);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -44936,7 +44943,7 @@ var transform;
 var options = {"sourceMap":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(9)(content, options);
+var update = __webpack_require__(10)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -44953,10 +44960,10 @@ if(false) {
 }
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(8)(undefined);
+exports = module.exports = __webpack_require__(9)(undefined);
 // imports
 
 
@@ -44967,7 +44974,7 @@ exports.push([module.i, "/* Styles go here. */\r\n\r\nhtml, body {\r\n\tmargin: 
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 /*
@@ -45049,7 +45056,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -45095,7 +45102,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(10);
+var	fixUrls = __webpack_require__(11);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -45408,7 +45415,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 
@@ -45503,7 +45510,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46162,7 +46169,7 @@ module.exports = function (THREE) {
 };
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46210,7 +46217,7 @@ exports.Drone = Drone;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46275,12 +46282,6 @@ var ResearchType;
     ResearchType[ResearchType["WindTurbine"] = 2] = "WindTurbine";
 })(ResearchType = exports.ResearchType || (exports.ResearchType = {}));
 
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "250073c7cf5f1fff0a33684f4af8b3a8.obj";
 
 /***/ }),
 /* 15 */
