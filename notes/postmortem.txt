@@ -1,0 +1,23 @@
+
+Bilan plutôt décevant : je me suis concentré sur mes points faibles précédents
+(game mechanics et organisation écran), et je n'ai pas eu de temps à consacrer
+au graphisme.
+
+Leçon générale : une tâche non déjà essayée à l'avance va glisser / être frustrante
+(3h perdues sur layout flexbox + canvas, 4h sur webpack + chargements OBJ,
+ 3h sur rendu drone, probablement du fait du picking et du rendu de ligne)
+
+A l'inverse des techniques déjà tentées, même "oubliés", permettent d'être
+productif et de se débloquer facilement (modé Blender, codage TypeScript)
+
+L'environnement TypeScript / BrowserSync / THREE.js est vraiment bien, à conserver
+
+Sujets à travailler (faire des petits projets GitHub quand applicable) :
+ * Chaîne modé Blender (low poly, matériaux simples) => glTF => THREE.js => webpack
+ * Travail sur caméra 3D / "composition" (faire des rendus ? Lire ?)
+ * Intégration assets dans une petite scène THREE.js (suite aux points précédents)
+ * Faire fonctionner les ombres sur cette scène
+ * Layout d'un ou plusieurs canvas positionnés et dimensionnés en pur flexbox
+ * Trouver un bon linter/validateur pour TypeScript et CSS dans Visual Studio Code
+ * Etudier mangling css-modules / css-loader qui m'a posé problème (cf. journal.txt)
+ * Par ailleurs décider de faire fonctionner mon VPN, ou renoncer à l'utiliser...
