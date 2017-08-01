@@ -34,3 +34,9 @@ Idée trop longues / pas retenues :
 
     Améliorer champ de vision drone (3x3)
     => fausse bonne idée ; trop efficace!
+
+    Vérifier qu'on sait charger un modèle glTF (arbre ou rocher lowpoly)
+    => pas le temps d'expérimenter !
+
+    Debugger ombre drone, en ajouter aux autres éléments
+    => trop long, à faire au calme

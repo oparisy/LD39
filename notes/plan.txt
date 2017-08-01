@@ -25,17 +25,17 @@ Lundi :
  * [Fait] Recherche => restrictions constructions, simulation de son évolution
  * [Fait] Polish gameplay
  * [Fait] Améliorer caméra
+ * [Fait] Modélisation, chargement et insertion dans scène d'un modèle d'éolienne
 
-Ensuite :
- * Améliorer génération arbres et eau via automates
- * Vérifier qu'on sait charger un modèle glTF (arbre ou rocher lowpoly)
- * modèles bâtiments
- * Debugger ombre drone, en ajouter aux autres éléments
- * polish rendu / shaders
+Pas pu faire :
+ * modèles reste des bâtiments
  * assets "décoratifs" hors gameplay (arbres, etc.)
+ * Améliorer génération arbres et eau via automates
+ * polish rendu / shaders
  * Shader eau
  * animations
  * Accueil / flot de pages
  * Modèle drone
  * Coordonnées réelles pour drone (le fait venir exactement où l'on a cliqué, améliore reveal ; impact du + 0.5?)
  * Bug : valeurs pas mises à jour dans tooltips après amélioration par recherche
+ * Bug : rotation pales éoliennes NOK

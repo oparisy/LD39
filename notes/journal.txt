@@ -103,3 +103,12 @@ Objectifs priorisés atteints avant 22h30 !
 
 Travail sur caméra limité : lookAt donne vite mal au coeur,
 et modifier le point de vue met l'accent sur le manque de relief
+
+J'ai renoncé à l'utilisation de modèles glTF : pas le temps d'expérimenter, il faut partir sur du connu
+
+Chargement OBJ modélisé dans Blender marche pas mal !
+Il faut exporter avec X Forward, Z Up, triangulate faces, export selection (pour enlever plan de référence)
+Parenting blender ne semble pas avoir de conséquence une fois le modèle chargé
+
+Pas mal de travail avec les loaders webpack et three pour charger convenablement le modèle
+Animation pales NOK ; il faut que je me fasse un snippet de rotation autour d'un axe arbitraire, propre au modèle

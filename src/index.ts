@@ -3,6 +3,10 @@ import './style.css'
 // three.js
 import * as THREE from 'three'
 
+// Import OBJLoader and add it to THREE object
+declare var require: any;
+require('three-obj-loader')(THREE)
+
 import { WorldMap, MapCell, CellType } from './model/worldmap'
 import { Drone } from './model/drone'
 import { Building, BuildingType } from './model/building'
@@ -13,7 +17,6 @@ import { DroneRenderer } from './render/dronerenderer'
 
 import { BoundElement } from './ui/boundelement'
 import { Overlay } from './ui/overlay'
-
 
 /** The first game day starts at 8 AM */
 const START_HOUR = 8
@@ -263,6 +266,9 @@ function updateSimulationAndScene(dt: number) {
 	// Update the drone
 	drone.updatePosition(dt)
 	droneRenderer.updatePosition();
+
+	// Update map animations
+	mapRenderer.updateAnimation(dt)
 
 	// Did the drone fly over an unexplored cell?
 	let flownOver = map.getCell(Math.floor(drone.x), Math.floor(drone.y))

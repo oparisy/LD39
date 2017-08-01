@@ -80,6 +80,10 @@ export class MapCell {
         return this.building !== null
     }
 
+    public getBuildingType(): BuildingType {
+        return this.isBuilt() ? this.building.type : undefined
+    }
+
     /** Dot not call directy; use WorldMap#buildBuilding */
     setBuilding(building: Building) {
         this.building = building

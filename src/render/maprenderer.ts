@@ -1,5 +1,8 @@
 import * as THREE from 'three'
 import { WorldMap, MapCell, CellType } from '../model/worldmap'
+import { BuildingType } from '../model/building'
+
+declare var require: any;
 
 export class MapRenderer {
 
@@ -9,7 +12,16 @@ export class MapRenderer {
     private geom: THREE.Geometry
     public mesh: THREE.Mesh
 
+    private windTurbineModel: THREE.Group = undefined
+
+    private propellers: THREE.Object3D[] = []
+
     constructor(private map: WorldMap) {
+
+        // Load the wind turbine OBJ model
+        var loader = new THREE.OBJLoader()
+        loader.load(require('file-loader!../assets/windTurbine.obj'), (group) => this.onWindTurbineLoaded(group))
+
         // Build a plane with the proper number of subdivisions
         this.geom = new THREE.PlaneGeometry(map.width * MapRenderer.side, map.height * MapRenderer.side, map.width, map.height)
 
@@ -36,6 +48,11 @@ export class MapRenderer {
         this.mesh = new THREE.Mesh(this.geom, material)
     }
 
+    private onWindTurbineLoaded(group) {
+        console.log('Model loaded', group)
+        this.windTurbineModel = group
+    }
+
     public updateFacesColor() {
         for (var i = 0; i < this.geom.faces.length; i++) {
             let face = this.geom.faces[i]
@@ -45,6 +62,16 @@ export class MapRenderer {
 
         // To be on the safe side
         this.geom.colorsNeedUpdate = true
+    }
+
+    /** Update animated elements. dt should be in seconds */
+    public updateAnimation(dt: number) {
+        // TODO Bugged, improper pivot for rotation
+        /*
+        for (let propeller of this.propellers) {
+            propeller.rotateY(dt * Math.PI)
+        }
+        */
     }
 
     public cellBuilt(cell: MapCell) {
@@ -73,16 +100,25 @@ export class MapRenderer {
         position.multiplyScalar(1 / vset.size)
 
         // Add building here
-        const size = MapRenderer.side / 3
-        var cubeGeometry = new THREE.CubeGeometry(size, size, size)
-        var color = new THREE.Color(this.getCellColor(cell))
-        var hsl = color.getHSL()
-        color.setHSL(hsl.h, hsl.s, hsl.l * 1.2)
-        var cubeMaterial = new THREE.MeshLambertMaterial({ color: color.getHex() })
-        var cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
-        cube.position.set(position.x, position.y, size / 2)
+        if (cell.getBuildingType() === BuildingType.WindTurbine) {
+            // Maybe a race condition here, but the model should be loaded now
+            let model = this.windTurbineModel.clone()
+            model.position.set(position.x, position.y, 0)
+            this.mesh.add(model)
+            let propeller = model.children[1]
+            this.propellers.push(propeller)
 
-        this.mesh.add(cube)
+        } else {
+            const size = MapRenderer.side / 3
+            var cubeGeometry = new THREE.CubeGeometry(size, size, size)
+            var color = new THREE.Color(this.getCellColor(cell))
+            var hsl = color.getHSL()
+            color.setHSL(hsl.h, hsl.s, hsl.l * 1.2)
+            var cubeMaterial = new THREE.MeshLambertMaterial({ color: color.getHex() })
+            var cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
+            cube.position.set(position.x, position.y, size / 2)
+            this.mesh.add(cube)
+        }
     }
 
     private getCellColor(cell: MapCell): number {

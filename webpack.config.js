@@ -1,7 +1,10 @@
+
+const path = require('path')
+
 /* Configure HTMLWebpack plugin */
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: __dirname + '/src/index.html',
+  template: path.join(__dirname, '/src/index.html'),
   filename: 'index.html',
   inject: 'body'
 })
@@ -20,6 +23,10 @@ const BrowserSyncPluginConfig = new BrowserSyncPlugin({
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const ProgressBarPluginConfig = new ProgressBarPlugin()
 
+/* Remove/clean your build folder(s) before building */
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const CleanWebpackPluginConfig = new CleanWebpackPlugin(['docs'])
+
 /* Export configuration */
 module.exports = {
   devtool: 'source-map',
@@ -27,7 +34,7 @@ module.exports = {
     './src/index.ts'
   ],
   output: {
-    path: __dirname + '/docs',
+    path: path.join(__dirname, 'docs'),
     filename: 'index.js'
   },
   module: {
@@ -42,9 +49,12 @@ module.exports = {
           'style-loader?sourceMap',
           'css-loader'
         ]
+      }, {
+        test: /\.obj$/,
+        loader: 'file-loader'
       }
     ]
   },
   resolve: { extensions: ['.web.ts', '.web.js', '.ts', '.js'] },
-  plugins: [HTMLWebpackPluginConfig, BrowserSyncPluginConfig, ProgressBarPluginConfig]
+  plugins: [HTMLWebpackPluginConfig, BrowserSyncPluginConfig, ProgressBarPluginConfig, CleanWebpackPluginConfig]
 }

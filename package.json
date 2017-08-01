@@ -31,11 +31,13 @@
     "style-loader": "latest",
     "typescript": "latest",
     "webpack": "latest",
-    "webpack-dev-server": "latest"
+    "webpack-dev-server": "latest",
+    "file-loader": "latest",
+    "clean-webpack-plugin": "latest"
   },
   "dependencies": {
     "@types/three": "latest",
     "three": "latest",
-    "tween.js": "16.6.0"
+    "three-obj-loader": "latest"
   }
 }

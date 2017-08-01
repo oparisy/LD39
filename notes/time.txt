@@ -39,3 +39,5 @@
 22h30 Commit travail recherche ; objectifs priorisés atteints ! Pause
 23h00 Reprise
 23h50 Commit playtesting, test upgrade visibilité drone => trop, calage caméra
+00h00 Début travail sur OBJ (!)
+03h30 Commit final : chargement et insertion modèle OBJ éolienne

@@ -17,7 +17,7 @@ export class Building {
     static readonly RESEARCH_BASE_CONSUMPTION = 1000
     static readonly RESEARCH_COST = 500
 
-    constructor(private type: BuildingType, private location: MapCell) { }
+    constructor(public readonly type: BuildingType, private location: MapCell) { }
 
     /** Return the buiding actual power production, in kW */
     public getProduction(currentGameTime: number): number {
